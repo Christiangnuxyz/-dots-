@@ -1,7 +1,7 @@
 
-## Script for å gjøre setup mitt av Ubuntu 18.04 og Ubuntu baserte distorer lettere 
+# Script for å gjøre setup mitt av Ubuntu 18.04 og Ubuntu baserte distorer lettere 
 
-# Om scripetene 
+## Om scripetene 
  
 installer-ubuntu-ppaer.sh setter opp PPA sånn som jeg vil ha det
 
