@@ -231,7 +231,7 @@ sudo make install
 echo "-----------------------"
 echo "FERDIG MED CAVA"
 echo "----------------------"
-} 
+}
 i3lock() {
 echo "-------------------------------------------------------------------------------"
 echo "installere i3lock-fancy & i3lock-color"

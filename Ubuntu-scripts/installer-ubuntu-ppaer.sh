@@ -352,14 +352,3 @@ bionicbeaver
 gnome3
 avslutter
 
-
-# itch.io sin app funker ikke 
-
-#echo "----------------------------------------------------------------"
-#echo "Installere itch.io sin app" 
-#echo "------------------------------------------------------------------"
-#curl https://dl.itch.ovh/archive.key | sudo apt-key add -
-#ITCHIO_DEB="deb https://dl.bintray.com/itchio/deb artful main"
-#echo $ITCHIO_DEB | sudo tee /etc/apt/sources.list.d/itchio.list
-#sudo apt-get update -yyq
-#sudo apt-get install itch -yyq
