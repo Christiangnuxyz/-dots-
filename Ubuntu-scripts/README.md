@@ -1,8 +1,5 @@
 ---
-title: Script for å gjøre setup mitt av Ubuntu 18.04 og Ubuntu baserte distorer lettere 
-header-includes:
- - \usepackage[margin=.5in]{geometry}
-classoption: "12pt"
+# Script for å gjøre setup mitt av Ubuntu 18.04 og Ubuntu baserte distorer lettere 
 ---
 
 # Om scripetene 
