@@ -1,6 +1,5 @@
----
-# Script for å gjøre setup mitt av Ubuntu 18.04 og Ubuntu baserte distorer lettere 
----
+
+## Script for å gjøre setup mitt av Ubuntu 18.04 og Ubuntu baserte distorer lettere 
 
 # Om scripetene 
  
