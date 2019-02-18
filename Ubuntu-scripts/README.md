@@ -7,4 +7,4 @@ installer-ubuntu-ppaer.sh setter opp forskjellige PPA-er som WINE og NVIDIA og f
 
 Reinstallerings-script-for-Ubuntu-1.8.sh Reinstallere programvarer jeg bruker på PC-ene mine med Ubuntu
 
-Ubuntu i3wm setter opp i3 vindubehandleren på Ubuntu sånn som jeg vil ha den 
+Setter opp i3wm for Ubuntu med programvarer som jeg bruker med i3wm 
