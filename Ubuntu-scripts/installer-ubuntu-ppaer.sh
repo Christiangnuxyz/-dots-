@@ -2,10 +2,10 @@
 # Legger til Ubuntu PPAS
 
 # Variabler:
-SISTENDRET="19.jan.2019"
-ENDRINGER="Fjernet libreoffice fra PROGRAMVARERTEMA siden pakken ikke er tilgjenlig lenger "
-TINGFJERNET="Fjernet sudo apt-get update etter at UTSEENDEPPAS og laptop er lagt til oppdater heller cachen når ppa-en er lagt til "
-NYTT="Lagt til piper for å kunne konfigure PC-Mus i GNOME 3"
+SISTENDRET="18.feb.2019"
+ENDRINGER="Fjernet unøvending info"
+TINGFJERNET=""
+NYTT=""
 VER="Versjon 1.0.9"
 OS="Testet på Ubuntu 18.10"
 KODENAVN="$(lsb_release -sc)"
@@ -620,30 +620,3 @@ installer-ubuntu-ppaer
 gnome3
 avslutter
 
-
-#echo "----------------------------------------------------------------------------------------------------------"
-#echo "'deb https://dl.winehq.org/wine-builds/ubuntu/ distrokodenavnet stå main' må oppdaters manuelt midlertig"
-#echo "-----------------------------------------------------------------------------------------------------------"
-
-
-# IKKE i bruk fra og med 06 jan 2019 
-
-#pcsx2setup()  {
-#if dpkg -l | grep -qw "pcsx2"
-#then
-#echo "----------------------------------------------------------------"
-#echo "Legger til $PCSX2 pcsx2 sin ppa"
-#echo "------------------------------------------------------------------"
-#sudo add-apt-repository $PCSX2 -y
-#sudo apt-get update && sudo apt-get install $PCSX2PAKKER -yyq
-#else
-# echo "----------------------------------------------------------------------------------------------------------------------------"
-#echo "\e[1;31m PCSX2 er ikke støtte i den versjon av Ubuntu 18.04 \e[0m"
-# echo  "Sjekk her om PCSX2 har blitt oppdatert $PCSX2INFO"
-# echo "---------------------------------------------------------------------------------------------------------------------------"
-#fi
- # }
-
- # Spill ppa og spill pakker
-#PCSX2="ppa:gregory-hainaut/pcsx2.official.ppa"
-#PCSX2PAKKER="pcsx2 libusb-0.1-4:i386"
