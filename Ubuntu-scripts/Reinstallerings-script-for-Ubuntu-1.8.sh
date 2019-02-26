@@ -11,36 +11,39 @@
 
 
 # Variabler:
-SISTENDRET="7.feb.2019"
-NYTT="Lagt til nye kommentarer"
-VER="Versjon 1.8.8"
-OS="Testet sist på Ubuntu 18.04 & 18.10"
-ENDRINGER="Gjort kommentarer mer beskrivende"
+SISTENDRET="26.feb.2019"
+NYTT="Lagt til variabel BACKUPPROGRAMMER programmevarer som brukes til backup fra GUI og gnomeshellextensions funksjonen for å gjøre det letter med GNOMEEXTENSION  og ny versjon av scripet"
+VER="Versjon 1.8.9"
+OS="Testet sist på Ubuntu 18.10"
+ENDRINGER="Flyttet grsync fra UTVIKLING variabelen & akriverer dash-to-dock extension & små bug fikses"
+FJERNET="Fjernet GNOME shell utvidelser fra gnome3 funksjonen"
 KODENAVN="$(lsb_release -sc)"
 
 # Pakker
 BASIC="lxrandr pavucontrol synaptic software-properties-common  terminator transmission-gtk apparmor"
 SIKKERHET="gufw clamtk chkrootkit rkhunter gpgv2 gtkhash seahorse"
-MEDIA="libvlc-bin  vlc handbrake mkchromecast youtube-dl mpv gimp audacity geary libreoffice flameshot"
-OPPTAK="peek kazam"
+MEDIA="libvlc-bin vlc handbrake mkchromecast youtube-dl mpv gimp audacity geary libreoffice flameshot"
+OPPTAK="kazam"
 TILLEGG="caffeine alarm-clock-applet"
-UTVIKLING="filezilla zeal grsync sqlitebrowser"
+UTVIKLING="filezilla zeal sqlitebrowser"
 TERMINAL="neofetch at tldr htop pv zsh powerline unzip shellcheck curl git buku openssh-client rsync tree net-tools"
 METADATA="libimage-exiftool-perl"
 FJERNSTRYING="openssh-server rclone"
 SPILL="pcsx2 lgogdownloader xboxdrv"
+SPILLEXSTRAPAKKER="libboost-program-options1.65.1 libboost-regex1.65.1"
 FONTS="fonts-firacode fonts-league-spartan fonts-powerline fonts-emojione fonts-opendyslexic"
 FREEVIRTUAL="gnome-boxes"
 PAKKESYSTEMER="snap snapd flatpak"
+BACKUPPROGRAMMER="grsync backintime-gnome"
 
 # Språk pakkker 
-
 ENGELSK="hunspell-en-ca libreoffice-help-en-us hunspell-en-au libreoffice-l10n-en-za libreoffice-help-en-gb hunspell-en-gb libreoffice-l10n-en-gb hunspell-en-za mythes-en-au hyphen-en-ca hyphen-en-us mythes-en-us hyphen-en-gb gimp-help-en"
 NORSK="language-pack-nb language-pack-nb-base language-pack-gnome-nb libreoffice-l10n-nb firefox-locale-nb wnorwegian hunspell-no mythes-no hyphen-no"
 
 
 # Pakker som følger med som standard fra Ubuntu av Canoical
 CANONICAL="thunderbird* cheese simple-scan gnome-mines aisleriot gnome-sudoku gnome-mahjongg brasero orca gksu"
+# Disse pakkene brukes for å melde om feil til Ubuntu og Canoical
 VALGFRIT="apport-gtk ubuntu-report"
 
 
@@ -49,14 +52,16 @@ VIRTUALTERMINAL="cpu-checker"
 MASKINVARE="fwupdate"
 TEMPERATUR="lm-sensors hddtemp psensor"
 HARDDISK="bleachbit gparted gdmap baobab gnome-disk-utility testdisk"
+HARDDISKCRYPT="cryptsetup"
 FILSYSTEMSUPPORT="exfat-utils exfat-fuse hfsprogs"
 
 # Pakker som innholder EULA eller andre non-freee software som mediakodekser osv
 EULA="ubuntu-restricted-extras steam libsdl2-2.0-0 libvde0 libvdeplug2"
 DVDSUPPORT="libdvd-pkg libdvdcss-dev libdvdcss2"
-VIRTALBOXEULA="virtualbox libqt5opengl5 virtualbox-qt virtualbox-ext-pack vde2 virtualbox-guest-additions-iso"
+VIRTALBOXEULA="virtualbox libqt5opengl5 libvde0 libvdeplug2 virtualbox-qt virtualbox-ext-pack vde2 virtualbox-guest-additions-iso"
 
-# Pakker som har med utseende på programmvarene 
+
+# Pakker som har med utseende på programmvarene og skrivebord generelet
 
 PROGRAMVARERTEMA="libreoffice-gtk libreoffice-gtk2 libreoffice-gtk3"
 UTSEENDE="gtk-chtheme folder-color qt4-qtconfig qt5-style-plugins qt5ct"
@@ -108,7 +113,7 @@ GNOMEEXTENSION=" gnome-shell-extensions chrome-gnome-shell gnome-shell-extension
 GNOMEVPN="network-manager-openvpn-gnome network-manager-pptp-gnome network-manager-l2tp-gnome"
 GNOMEPROGRAMMER="gnome-todo gnome-usage gnome-screenshot tilix"
 UBUNTUGNOMEPAKKER="gnome-shell-extension-ubuntu-dock"
-COSMICCUDDELFISH="gnome-shell-extension-gsconnect feedreader"
+COSMICCUDDELFISH="gnome-shell-extension-gsconnect peek feedreader"
 HELSE="safeeyes"
 
 # Pakker som fjenes hvis det er gnome 3
@@ -127,6 +132,11 @@ MUSIKON="DMZ-Black"
 
 # GNOME Tracker beskrivelse
 TRACKER="metadata database, indexer and search tool"
+
+# GNOME extension mapper 
+DASHTODOCK="dash-to-dock@micxgx.gmail.com"
+OPENWEATHER="openweather-extension@jenslody.de"
+
 
 # Mapper
 AMAZON="/usr/share/applications/ubuntu-amazon-default.desktop"
@@ -152,6 +162,7 @@ FLATPAKARCDARKER="org.gtk.Gtk3theme.Arc-Darker"
 FLATPAKARCDARKERSOLID="org.gtk.Gtk3theme.Arc-Darker-solid"
 FLATPAKARCDARK="org.gtk.Gtk3theme.Arc-Dark"
 FLATPAKARCDARKSOLID="org.gtk.Gtk3theme.Arc-Dark-solid"  
+
 
 
 
@@ -225,10 +236,13 @@ laptop() {
 	echo "Sjekker om laptop-en har batteri"
 	echo "---------------------------------"
 	if  upower --show-info /org/freedesktop/UPower/devices/battery_BAT0 | grep -E "state|to\ full|percentage"
-		then echo "Installere $LAPTOPBATTERI pakker" && sudo apt-get install $LAPTOPBATTERI -yyq
+		then 
+		echo "---------------------------------------------------------------------------------------------"
+		echo "Installere disse"$LAPTOPBATTERI" pakken for laptop batteri" && sudo apt-get install $LAPTOPBATTERI -yyq
+	echo "---------------------------------------------------------------------------------------------"
 	else
 	echo "------------------------------------------------"
-	echo -e "\e[1;31m Du har IKKE batteri på datamaskinen \e[0m" && sudo apt-get purge $LAPTOPBATTERI -yyq 
+	echo -e "\e[1;31m Du har IKKE batteri i laptopen \e[0m" && sudo apt-get purge $LAPTOPBATTERI -yyq 
 	echo "-------------------------------------------------"
     fi
     }
@@ -253,12 +267,12 @@ laptop() {
 	if echo "$XDG_CURRENT_DESKTOP" | grep "GNOME"
 	then
 		# Aktivere sånn at GNOME 3 viser batteri prossent i gnome-shell 	
-		echo "-----------------------------"
-		echo "Aktivere vis batteri prossent"
-		echo "-----------------------------"
+		echo "------------------------------------------------"
+		echo "Aktivere at batteri prossent vis i GNOME shell"
+		echo "-------------------------------------------------"
 		gsettings set org.gnome.desktop.interface show-battery-percentage true
 	else
-        echo "---------------------------------------------------------------------"
+    echo "---------------------------------------------------------------------"
 	echo -e "\e[1;31m Du har bruker IKKE GNOME 3 \e[0m"
 	echo "---------------------------------------------------------------------"
 	fi
@@ -321,9 +335,9 @@ gamlepakker() {
 if echo $KODENAVN | grep "cosmic"
 then
 echo "----------------------------------------------------------------------------------------------------------------------------------------------"
-echo "Fjerner pakker som shutter browser-plugin-vlc siden det ikke er lenger i Ubuntu 18.10 cosmic sitt repo"
+echo "Fjerner pakker som browser-plugin-vlc siden det ikke er lenger i Ubuntu 18.10 cosmic sitt repo"
 echo "----------------------------------------------------------------------------------------------------------------------------------------------"
-sudo apt-get purge shutter browser-plugin-vlc -yyq 
+sudo apt-get purge browser-plugin-vlc -yyq 
 else
 echo "----------------------------------------------------------------------------------------------------------------------------------------------"
 echo -e "\e[1;31m Du bruker IKKE Ubuntu 18.10 cosmic \e[0m"
@@ -399,31 +413,52 @@ if echo "$XDG_CURRENT_DESKTOP" | grep -qw "GNOME"
 		echo "---------------------------------------------------------------------------------------------------------------"
 	echo "Installere GNOME 3 pakker fordi Skrivebordsmiljø er GNOME" && sudo apt-get install $TEMA $IKONER $GNOME $GNOMETILPASS $GNOMEPROGRAMMER  $GNOMESIKKERHET -yyq
 	echo "Installere GNOME 3 shell extensions pakker fordi Skrivebordsmiljø er GNOME" && sudo apt-get install $GNOMEEXTENSION -yyq
-	echo "Sjekke ut $GNOMESHELLINFO for oppdateringer til GNOME 3 shell extensions. NB krever nettleser utvidelse"
-    echo "---------------------------------------------------------------------------------------------------------------"
-	sleep 2
 	echo "---------------------------------------------------------------------------------------------------------------"
 	echo "Installere Canonical sitt nye GTK tema og vanlig GTK temaer som snap" && sudo snap install $SNAPBIONIC $SNAPGTK
     echo "---------------------------------------------------------------------------------------------------------------"
-    # Aktivere minimize siden for dash-to-dock utvidelsen  i GNOME shell 
-    echo "------------------------------------------------------------------------------------------------------------------------"
-    echo "Aktivere minimize siden for dash-to-dock siden det ikke er normalt i GNOME når du klikker på et ikonet til et program"
-    echo "------------------------------------------------------------------------------------------------------------------------"
-    gsettings set org.gnome.shell.extensions.dash-to-dock click-action 'minimize'
     echo "---------------------------------------------------------------------------------------------------------------"
     echo "Installere støtte for å sett opp en VPN på flere måtter i GNOME 3" && sudo apt-get install $GNOMEVPN -yyq
-    echo "Øsnker du å installere safeeyes for å en pause fra skjermen" && sudo apt-get install $HELSE
-    echo "------------------------------------------------------------------------------------------------------"
+    echo "---------------------------------------------------------------------------------------------------------------"
+    echo "---------------------------------------------------------------------------------------------------------------"
+    echo "Vil du å installere safeeyes for å en pause fra skjermen?" && sudo apt-get install $HELSE
+    echo "---------------------------------------------------------------------------------------------------------------"
     echo "Ønsker du og søke etter filer med gnome 3 sånn som windows utforsker?" && sudo apt-get install tracker
+    echo "---------------------------------------------------------------------------------------------------------------"
+
+gnomeshellextensions() {
+
+# Aktiver forskjellige GNOME shell extensions
+if echo "$XDG_CURRENT_DESKTOP" | grep -qw "GNOME"
+	then
+    echo "---------------------------------------------------------------------------------------------------------------"
+	echo "Sjekke ut "$GNOMESHELLINFO" for oppdateringer til GNOME 3 shell extensions. NB krever nettleser utvidelse"
+    echo "---------------------------------------------------------------------------------------------------------------"
+	sleep 2
+    echo "---------------------------------------------------------------------------------------------------------------"
+    echo "Aktivere dash-to-dock extension for GNOME shell" && gnome-shell-extension-tool --enable-extension /usr/share/gnome-shell/exentesions/"$DASHTODOCK" 
+    echo "---------------------------------------------------------------------------------------------------------------" 
+    echo "-------------------------------------------------------------------------------------------------------------------------------------------------------"
+    echo "Aktivere minimize siden for dash-to-dock extension siden det ikke er normalt i GNOME når du klikker på et ikonet til et program"
+    echo "--------------------------------------------------------------------------------------------------------------------------------------------------------"
+    gsettings set org.gnome.shell.extensions.dash-to-dock click-action 'minimize'
+    echo "---------------------------------------------------------------------------------------------------------------"
+    echo "Aktivere openweather-extension for tilgang til været GNOME shell" && gnome-shell-extension-tool --enable-extension /usr/share/gnome-shell/exentesions/"$OPENWEATHER" 
+    echo "---------------------------------------------------------------------------------------------------------------" 
+else 
+    echo "-------------------------------------------------------------------------"
+echo -e "\e[1;31m Du bruker ikke GNOME \e[0m"
+    echo "-------------------------------------------------------------------------"	
+fi 
+}    
 
 tracker(){
 # Sjekker om tracker er installert
-if apt list tracker | grep -qw "installert" 2>/dev/null
+if dpkg -l tracker | grep -qw "installert" 2>/dev/null
     then    	
     echo "-------------------------------------------------------------------"
     echo "Oppdatere tracker sin database for å gjøre GNOME 3 sitt søk bedre"
     echo "------------------------------------------------------------------"
-    	sudo updatedb
+    	sudo /usr/bin/updatedb 
     	else
     echo "-------------------------------------------------------------------------"
 echo -e "\e[1;31m tracker er ikke installert så får IKKE oppdatere databasen nå \e[0m"
@@ -499,7 +534,7 @@ echo "---------------------------------------------"
 echo "Du har alt satt QT tema variabelen"
 echo "--------------------------------------------"
 else 
-# Legger til export QT_QPA_PLATFORMTHEME=gtk .profile filen	
+# Legger til export QT_QPA_PLATFORMTHEME=gtk .profile filen	i Hjemme mappen
 echo "--------------------------------------------------------------------------------"
 echo "Setter opp QT tema variabelen
  og krever omstart av session for å bli tatt i bruk"
@@ -572,7 +607,7 @@ echo "---------------------------------------"
 if echo "Sjekker om virtualbox er installert" && dpkg --get-selections | grep -qw virtualbox
 echo "---------------------------------------------------------------"
 then
-# Sjekker om brukeren er medlem av gruppen vboxusers	
+# Sjekker om brukeren din er medlem av gruppen vboxusers	
 groups | grep -ic "vboxusers" > /dev/null
  echo "---------------------------------------"
  echo "$USER er alt i vboxusers"
@@ -585,11 +620,10 @@ fi
 }
 
 appimagepakker()  {
-
 echo "---------------------------------------------------------------"
 echo "Laster ned KeePassXC som Appimage i mappen $Nedlastingermappe"
 echo "---------------------------------------------------------------"
-mkdir -p $HOME/Appimage
+mkdir -p "$HOME/Appimage"
 cd $Nedlastingermappe || exit
 wget -O KeePassXC.AppImage "$KEEPASSXCAPPIMAGE" -P "$Nedlastingermappe"
 }
@@ -607,7 +641,7 @@ echo "Legger til flathub støtte for å kunne last ned flatpak pakker fra flathu
 echo "---------------------------------------------------------------------------"
 sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 echo "Oppdater flatpak"
-sudo flatpak update
+sudo flatpak update -y 
 echo "---------------------------------------------------------------------------------------------"
 echo "Installere Ubuntu 18.04 Bioic Beaver LTS sitt GTK tema for flatpak apper også"
 echo "---------------------------------------------------------------------------------------------"
@@ -697,8 +731,9 @@ echo "---------------------------------------------------"
 echo "Reinstallsjon script for Ubuntu $VER"
 echo "$OS"
 echo "$NYTT i $VER"
+echo "Endringer i $VER $ENDRINGER"
+echo "$FJERNET fra $VER"
 echo "Sist endret $SISTENDRET"
-echo "$ENDRINGER"
 echo "----------------------------------------------------------------------------------"
 echo "Legger til 32 bit støtte for deb pakker i apt som er nyttig for steam og wine..."
 echo "-----------------------------------------------------------------------------------"
@@ -718,34 +753,37 @@ echo "--------------------------------------------------------------------------
 echo "--------------------------------------------------------------------------------------------------------------------"
 echo "Vil du kun fjern styre denne PC-en og sync ting til skyen med rclone,Hvis ja installer disse pakkene" && sudo apt-get install $FJERNSTRYING
 echo "--------------------------------------------------------------------------------------------------------------------"
+echo "---------------------------------------------------------------------------------------------------------------"
+echo "Vil du å installere disse "$BACKUPPROGRAMMER" pakkene for å kunne ta backup fra GUI" && sudo apt-get install $BACKUPPROGRAMMER --install-suggests
+echo "---------------------------------------------------------------------------------------------------------------"
 echo "Vil du bruke PC-en din på norsk?,Hvis ja installer disse pakkene" && sudo apt-get install $NORSK
 echo "--------------------------------------------------------------------------------------------------------------------"
-echo "Fjerner disse $CANONICAL Ubuntu pakkene jeg IKKE liker..."  && sudo apt-get purge $CANONICAL -yqq
+echo "Fjerner disse "$CANONICAL" Ubuntu pakkene jeg IKKE liker..."  && sudo apt-get purge $CANONICAL -yqq
 echo "---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
 echo "Du må godta EULA/Lisensen til disse $EULA for å kun installere alle av dem for virtualbox kan det også være lurt og sjekke $VIRTALBOXURL for nyere versjoner av virtualbox" && sudo apt-get install $EULA $VIRTALBOXEULA
 echo "---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
 echo "---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
-echo "Ønsker du og installer ""$SPILL"" for å kunne spille PS2 spill og last ned spill fra GOG med terminalen og støtte for xbox kontrollere" && sudo apt-get install $SPILL
+echo "Ønsker du og installer "$SPILL" for å kunne spille PS2 spill og last ned spill fra GOG med terminalen og støtte for xbox kontrollere" && sudo apt-get install $SPILL --install-suggests
 echo "---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
 echo "----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"	
-echo "DVD support EULA/Lisensen er ikke mulig å avbryte enkelt men du får muligheten til å fjerne disse $DVDSUPPORT pakkene på slutten av scripet hvis du skulle ønske det " && sleep 5
+echo "DVD support EULA/Lisensen er ikke mulig å avbryte enkelt men du får muligheten til å fjerne disse "$DVDSUPPORT" pakkene på slutten av scripet hvis du skulle ønske det " && sleep 5
 echo "-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
 # Installer $DVDSUPPORT for å få muligheten til å spille DVD-er
 sudo apt-get install $DVDSUPPORT
 sleep 5
 sudo dpkg-reconfigure libdvd-pkg
 echo "-------------------------------------------------------------------------------------------------------------------"
-echo "NB: for å kunne bruke Steam sin Proton må disse kravene være oppfylt sjekke ut $PROTONINFO for mer info" && sleep 5
+echo "NB: for å kunne bruke Steam sin Proton må disse kravene være oppfylt sjekke ut "$PROTONINFO" for mer info" && sleep 5
 echo "------------------------------------------------------------------------------------------------------------------"
 echo "---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
-echo "Hvis du ønsker et free software til alternativ virtualbox kan du installere $FREEVIRTUAL" && sudo apt-get install $FREEVIRTUAL
+echo "Hvis du ønsker et free software til alternativ virtualbox kan du installere "$FREEVIRTUAL"" && sudo apt-get install $FREEVIRTUAL
 echo "-----------------------------------------------------------------------------------------"
 # Åpener dialogbox hvor man kan se prosent av installasjonen
 
 for i in $(seq 1 100)
 do
     sleep 0.1 
-    echo $i && sudo apt-get install $BASIC $ENGELSK $FONTS $BIONICBEAVER $SIKKERHET $FILSYSTEMSUPPORT $HARDDISK $MEDIA $OPPTAK $METADATA $IKONER $TEMA $UTSEENDE $PROGRAMVARERTEMA $VIRTUALTERMINAL $ANDROID $UTVIKLING $TILLEGG $TERMINAL $PAKKESYSTEMER  $TEMPERATUR $MASKINVARE -yqq
+    echo $i && sudo apt-get install $BASIC $ENGELSK $FONTS $BIONICBEAVER $SIKKERHET $FILSYSTEMSUPPORT $HARDDISK $HARDDISKCRYPT $MEDIA $OPPTAK $METADATA $IKONER $TEMA $UTSEENDE $PROGRAMVARERTEMA $VIRTUALTERMINAL $ANDROID $UTVIKLING $TILLEGG $TERMINAL $PAKKESYSTEMER  $TEMPERATUR $MASKINVARE -yqq
 done | whiptail --title '"Installer alle pakken som er free software...' --gauge 'Installer pakker fra Ubuntu repo...' 6 60 0
 echo "--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
 }
@@ -763,12 +801,12 @@ echo "Sjekke ut $FWUPSUPPORTETURL for mer info om oppdateringer rundt firmware f
 echo "------------------------------------------------------------------------------------------------------------------"
 sleep 2
 else	
- fwupdate -s | grep -qw "not supported"	
+fwupdate -s | grep -qw "not supported"	
 echo "-------------------------------------------------------------------------------------------------------------------"
 echo -e "\e[1;31m Du kan IKKE oppdatere UEFI/BIOS-en firmware din fra Ubuntu \e[0m"
 echo "------------------------------------------------------------------------------------------------------------------" 
 echo "------------------------------------------------------------------------------------------------------------------"
-echo "Sjekke ut $FWUPSUPPORTETURL for mer info om oppdateringer rundt firmware"
+echo "Sjekke ut "$FWUPSUPPORTETURL" for mer info om oppdateringer rundt firmware"
 echo "------------------------------------------------------------------------------------------------------------------"
 sleep 2
 sudo apt-get purge $MASKINVARE -yyq
@@ -805,7 +843,7 @@ else
 echo "--------------------" 
 echo "Setter opp SSH"
 echo "--------------------"	
-mkdir $HOME/.ssh -p && ssh-keygen
+mkdir -p "$HOME/.ssh"  && ssh-keygen
 fi
 } 
 
@@ -829,6 +867,7 @@ canonicalpakker
 gamlepakker
 ubuntugnome
 gnome3
+gnomeshellextensions
 tracker
 kdeconnectserver
 gnomeshell
