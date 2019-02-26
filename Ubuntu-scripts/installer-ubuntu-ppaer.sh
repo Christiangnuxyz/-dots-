@@ -2,23 +2,29 @@
 # Legger til Ubuntu PPAS
 
 # Variabler:
-SISTENDRET="18.feb.2019"
-ENDRINGER="Fjernet unøvending info"
-TINGFJERNET=""
-NYTT=""
+SISTENDRET="26.feb.2019"
+ENDRINGER="Oppdatert kommentarer"
+TINGFJERNET="Fjerner at NVIDIA pakkerene installers en etter en"
+NYTT="Lagt til NVIDIA32BITPAKKER og NVIDIAPAKKER som variabler"
 VER="Versjon 1.0.9"
 OS="Testet på Ubuntu 18.10"
 KODENAVN="$(lsb_release -sc)"
 
 
+# Pakkebehandler 
+FLATPAKPPA="ppa:alexlarsson/flatpak" 
 
-# Grafikkort ppa
+# NVIDIA Grafikkort ppa
 NVIDIAPPA="ppa:graphics-drivers/ppa"
 
-# NVIDA graikkort ppa pakker
+# NVIDA grafikkort ppa info
 VERSJON="415"
 NVIDIAPROBLEMER="med nvidia-driver-$VERSJON er det problemer med GetThreadContext Failed i spill som bruker Untiy med Steamplay Proton så midlertig fix er å bruke PROTON_USE_WINED3D11=1 %command% i som oppstart flag"
 
+# NVIDA grafikkort ppa pakker
+
+NVIDIA32BITPAKKER="libnvidia-gl-$VERSJON:i386 libnvidia-common-$VERSJON:i386 libnvidia-decode-$VERSJON:i386 libnvidia-decode-$VERSJON:i386" 
+NVIDIAPAKKER="xserver-xorg-video-nvidia-$VERSJON nvidia-driver-$VERSJON libnvidia-cfg1-$VERSJON"
 
 # Nødvendige pakker for at scripet skal funke
 
@@ -185,13 +191,13 @@ laptop() {
     echo "Sjekker om laptop-en har batteri"
     echo "---------------------------------"
     if upower -i /org/freedesktop/UPower/devices/battery_BAT0 | grep -E "state|to\ full|percentage"
-        then echo "Legger til $LAPTOP ppa-en" && sudo add-apt-repository --update $LAPTOP -y && sudo apt-get install $TLP -yyq
+        then echo "Legger til "$LAPTOP" ppa-en" && sudo add-apt-repository --update $LAPTOP -y && sudo apt-get install $TLP -yyq
         echo "---------------------------------------------------------"
         echo "Ferdig med å installere disse pakkene $TLP"
         echo "---------------------------------------------------------"
     else
     echo "------------------------------------------------"
-    echo -e "\e[1;31m Du har IKKÈ batteri i datamaskinen \e[0m" && sudo apt-get purge $GAMLELAPTOPPAKKER $TLP -yyq  >/dev/null
+    echo -e "\e[1;31m Du har IKKÈ batteri i laptop-en \e[0m" && sudo apt-get purge $GAMLELAPTOPPAKKER $TLP -yyq  >/dev/null
     echo "------------------------------------------------"
     exit
     fi
@@ -220,11 +226,11 @@ if echo "$XDG_CURRENT_DESKTOP" | grep "GNOME"
     echo "-------------------------------------------------------------------------------------"
     sudo add-apt-repository --update $LOLLYPOP -y && sudo add-apt-repository --update $PIPER -y
     echo "-------------------------------------------------------------------------------"
-    echo "Installer $GNOMEPROGRAMVARER $GNOME for GNOME 3"
+    echo "Installer "$GNOMEPROGRAMVARER" "$GNOME" for GNOME 3"
     echo "-------------------------------------------------------------------------------"
     sudo apt-get install $PIPERDEB $GNOMEPROGRAMVARER $GNOME -yyq
     echo "--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
-    echo "Setter $UTSEENDE som ikon tema og GTK+ tema det kan endres tilbake med gnome-tweaks eller dconf vis du er hardcore"
+    echo "Setter "$UTSEENDE" som ikon tema og GTK+ tema det kan endres tilbake med gnome-tweaks eller dconf vis du er hardcore"
     echo "--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
     gsettings set org.gnome.desktop.interface gtk-theme $GTK
     gsettings set org.gnome.desktop.interface icon-theme $IKON
@@ -232,7 +238,7 @@ if echo "$XDG_CURRENT_DESKTOP" | grep "GNOME"
     gsettings set org.gnome.shell.extensions.user-theme name $GTK
 else
     echo "---------------------------------------------------------"
-    echo "Skrivebordsmiljø ditt er IKKE GNOME"
+    echo -e "\e[1;31m Skrivebordsmiljø ditt er IKKE GNOME \e[0m"
     echo "---------------------------------------------------------"
 fi
 }
@@ -251,9 +257,9 @@ echo "Sjekker om du har et NVIDIA grafikkkort"
 echo "---------------------------------------------"
 if lspci | grep -ic --color "NVIDIA" 2>/dev/null
 then
- echo "------------------------------------------------------"
- echo "Du har et NVDIA grafikkkort installere nvidia-settings" && sudo apt-get install software-properties-gtk nvidia-settings flatpak -yyq 
- echo "------------------------------------------------------"
+ echo "-------------------------------------------------------------------"
+ echo "Du har et NVDIA grafikkkort installere nvidia-settings og flatpak" && sudo apt-get install software-properties-gtk nvidia-settings flatpak -yyq 
+ echo "-------------------------------------------------------------------"
 else
  echo "----------------------------------..........."
  echo "\e[1;31m  Du har IKKE et NVDIA grafikkkort \e[0m" && sudo apt-get purge nvidia-settings -yyq
@@ -285,7 +291,7 @@ nvdia-ppa() {
 while true;  do
 read -r -p "Vil du legg til $NVIDIAPPA for å få nyere graikk driver oppdateringer. ADVARSEL NVIDIA DRIVERNE KAN VÆRE VELDIG USTABLI & KREVER OMSTASTART ETTER INSTALLASJOEN (j/n)?" valgnvdia
 case "$valgnvdia" in
-  [Jj]* ) echo "Legger til denne ppa $NVIDIAPPA og installer den versjon av nvidia-driver-$VERSJON" && sudo add-apt-repository --update $NVIDIAPPA -y && sudo apt-get install xserver-xorg-video-nvidia-$VERSJON nvidia-driver-$VERSJON libnvidia-cfg1-$VERSJON libnvidia-gl-$VERSJON:i386 libnvidia-common-415:i386 libnvidia-decode-$VERSJON:i386 libnvidia-decode-$VERSJON:i386 -yyq && sudo apt-get autoremove -yyq  
+  [Jj]* ) echo "Legger til denne ppa $NVIDIAPPA og installer den versjon av nvidia-driver-$VERSJON" && sudo add-apt-repository --update $NVIDIAPPA -y && sudo apt-get install $NVIDIAPAKKER $NVIDIA32BITPAKKER -yyq && sudo apt-get autoremove -yyq  
  exit;;
   [Nn]* ) echo "Nei legger IKKE til ppa til $NVIDIAPPA"; exit;;
   * ) echo "Ikke et svar";;
@@ -312,9 +318,9 @@ nvidaproblemer() {
 if lspci | grep -qw "NVIDIA" && dpkg -l steam 2>/dev/null
 then
 echo "--------------------------------------------------------------------------"    
-echo "\e[1;31m Det er nå $NVIDIAPROBLEMER så gå videre om du kan fikse dette \e[0m"
+echo -e "\e[1;31m Det er nå "$NVIDIAPROBLEMER" så gå videre om du kan fikse dette \e[0m"
 echo "--------------------------------------------------------------------------"   
-echo "Sjekke ut $PROTONINFO for mer tips om feilsøking av Steamplay"
+echo "Sjekke ut "$PROTONINFO" for mer tips om feilsøking av Steamplay"
 echo "--------------------------------------------------------------------------"
 sleep 5
 else 
@@ -348,9 +354,9 @@ sudo apt-get update -yyq
 sudo apt-get install lutris -yyq
 
 blizzard(){
-echo "-------------------------------------------------------"
-echo "Pakker for Ubuntu at Battle.net skal funke med lutris"
-echo "--------------------------------------------------------"
+echo "--------------------------------------------------------------------"
+echo "Pakker til Ubuntu for at blizzard Battle.net skal funke med lutris"
+echo "---------------------------------------------------------------------"
 sudo apt-get install $BATTLENET $BATTLENETWINE -yyq
 echo "-------------------------------------------------------"
 echo "Installere WineHQ for battle.net"
@@ -371,7 +377,7 @@ sudo apt-get upgrade -yyq
 else 
    echo "$KODENAVN" | grep -qw "bionic"
 echo "---------------------------------------------"
-echo "Legger til wine i apt for Ubuntu 18.04"
+echo "Legger til wine i apt for Ubuntu 18.04 LTS"
 echo "---------------------------------------------"
 sudo apt-add-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ bionic main'
 sudo apt update -yqq
@@ -500,7 +506,7 @@ echo "Putter VirtualBox 6.0.0 Oracle VM VirtualBox Extension Pack i /tmp/"
 echo "----------------------------------------------------------------------------------"
 wget "$VIRTUALBOXEXT" -P /tmp/ && wget -O SHA256SUMS "$VIRTUALBOXSUMS" -P /tmp/ 
 echo "----------------------------------------------------------------"
-echo "Sjekker om sha256sum til $VBOXEXTPACK er riktig"
+echo "Sjekker om sha256sum til "$VBOXEXTPACK" er riktig"
 echo "------------------------------------------------------------------"
 cd /tmp/ || exit 
 sha256sum -c $VBOXEXTPACK SHA256SUMS  2>&1 | grep --color=always  "OK"
@@ -553,19 +559,22 @@ if  [ "$1" == "--vm" ];then
     exit
     fi
 
+
+
+
 # Scripet starter
 installer-ubuntu-ppaer() {
-echo "--------------------------------------------------------------"
+echo "-------------------------------------------------------------------------------------------"
 echo "SCRITPET MÅ BLI KJØRT MED SUDO RETTIGHETER!!!"
-echo "-------------------------------------------------------------"
-echo "Installer $UBUNTUPAKKER som lar deg legg til ppas i Ubuntu"
-echo "-------------------------------------------------------------"
-dpkg -l software-properties-common && sudo apt-get install software-properties-common -yyq
+echo "---------------------------------------------------------------------------------------------------------------------------------------"
+echo "Installer "$UBUNTUPAKKER" som lar deg legg til ppas i Ubuntu og Ubuntu baserte distroer"
+echo "----------------------------------------------------------------------------------------------------------------------------------------"
+dpkg -l software-properties-common && sudo apt-get install software-properties-common --no-install-recommends -yyq
 echo "-------------------------------------------------------"
 echo "Legger til Ubuntu PPAS $VER"
 echo "$NYTT i $VER"
 echo "$ENDRINGER i $VER"
-echo  "$TINGFJERNET fra $VER"
+echo "$TINGFJERNET fra $VER"
 echo "$OS"
 echo "Sist endret $SISTENDRET"
 echo "-------------------------------------------------------------------------------------------------------------------"
@@ -578,32 +587,32 @@ echo "--------------------------------------------------------------------------
 echo "Har du har lyst til å spille på Windows PC-spill med wine legg til --spill"
 echo "--------------------------------------------------------------------------------------------------------------------"
 echo "----------------------------------------------------"
-echo "Legger til $UTSEENDEPPAS"
+echo "Legger til "$UTSEENDEPPAS""
 echo "----------------------------------------------------"
 sudo add-apt-repository --update $ADAPTA -y && sudo add-apt-repository $PAPIRUS --update -y
 sudo add-apt-repository --update $PLATATHEME -y
 echo "-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
-echo "Sjekk ut disse URL-ene $ADAPTATHEMEURL $PLATATHEMEURL for mer info om GTK"
+echo "Sjekk ut disse URL-ene "$ADAPTATHEMEURL" "$PLATATHEMEURL" for mer info om GTK"
 echo "-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
 echo "-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
-echo "Sjekk ut den URL-en $PAPIRUSIKONTEMAURL for mer info om ikon tema et"
+echo "Sjekk ut den URL-en "$PAPIRUSIKONTEMAURL" for mer info om ikon tema et"
 echo "-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
 sleep 5
 echo "----------------------------------------------------------------"
-echo "Installere $FONTS som er anbefalt å bruke sammen med $UTSEENDE"
-echo "Installer $UTSEENDE $PROGRAMTEMA $FONTER"
+echo "Installere "$FONTS" som er anbefalt å bruke sammen med "$UTSEENDE""
+echo "Installer "$UTSEENDE" "$PROGRAMTEMA" "$FONTER""
 echo "---------------------------------------------------------------"
 sudo apt-get install $UTSEENDE $FONTER -yqq
 sleep 5
 if dpkg --get-selections | grep -qw "$PROGRAMVARER"
     then
         echo "-----------------------------------------------------------------------"
-        echo "Du har alt $PROGRAMVARER installert så $PROGRAMTEMA vil bli installert"
+        echo "Du har alt "$PROGRAMVARER" installert så "$PROGRAMTEMA" vil bli installert"
         sudo apt-get install $PROGRAMTEMA -yyq
         echo "-----------------------------------------------------------------------"
 else
 echo "---------------------------------------------------------------------------------------------"
-echo -e "\e[1;31m  Du har IKKE $PROGRAMVARER installert så $PROGRAMTEMA blir IKKE installert \e[0m"
+echo -e "\e[1;31m  Du har IKKE "$PROGRAMVARER" installert så "$PROGRAMTEMA" blir IKKE installert \e[0m"
 echo "----------------------------------------------------------------------------------------------"
 fi
 }
