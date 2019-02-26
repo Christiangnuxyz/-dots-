@@ -3,10 +3,10 @@
 
 # Variabler
 VER="Versjon 1.8.4"
-SISTENDRET="5.feb.2019"
-OS="Testet sist på Ubuntu 17.04,17.10,18.04,18.10"
-NYTT="Ingeting nytt" 
-ENDRINGER="Oppdatert OOMOX sin deb fil"
+SISTENDRET="20.feb.2019"
+OS="Testet sist på Ubuntu 18.10"
+NYTT="Lagt til valgfrie moduller for polybar" 
+ENDRINGER="Ingen endringer"
 TIPS="bruk --polybar for å installer polybar" 
 
 # repo Pakkker  
@@ -24,6 +24,7 @@ WPGTKDEP="python-gobject xsltproc"
 # For --polybar
 
 POLYBARPAKKER="cmake cmake-data libcairo2-dev libxcb1-dev libxcb-ewmh-dev libxcb-icccm4-dev libxcb-image0-dev libxcb-randr0-dev libxcb-util0-dev libxcb-xkb-dev pkg-config python-xcbgen xcb-proto libxcb-xrm-dev i3-wm libasound2-dev libmpdclient-dev libiw-dev libcurl4-openssl-dev libpulse-dev libxcb-composite0-dev xcb libxcb-ewmh2"
+POLYBARVALGFRITT="libnl-genl-3-dev libcurl4-openssl-dev libmpdclient-dev libjsoncpp-dev libpulse-dev libasound2-dev	libxcb-cursor-dev libxcb-xrm-dev libxcb-xkb-dev"	
 
 # Maskinvare 
 
@@ -44,7 +45,7 @@ DEADBEEFINFO="https://sourceforge.net/projects/deadbeef/"
 # Info URL-er om forskjellige ting som last ned fra github
 
 I3GAPSURL="https://github.com/Airblader/i3/wiki/Compiling-&-Installing"
-
+POLYBARURL="https://github.com/jaagr/polybar/wiki/Compiling"
 
 
 # Mapper 
@@ -77,7 +78,7 @@ fonts() {
 	cd "$HOME" || exit 
 echo "Ser etter $FONTS...."  >/dev/null
 if [ ! -f "$FONTS" ];then 
-	echo "file "  "$FONTS" "finnes." >/dev/null  echo "Fant $FONTS mappen...." && cd "$FONTS"  || exit
+	echo "file "  "$FONTS" 2>/dev/null  echo "Fant $FONTS mappen...." && cd "$FONTS"  || exit
 else mkdir -p "$HOME/.fonts/" 
   fi
 } 
@@ -119,8 +120,9 @@ echo "--------------------------------------------------------------------------
 echo -e "\e[1;31m ADVARSEL HVIS DU HAR POLYBAR INSTALLERT FRA FØR BLIR CONFIG FILENE OVERSKREVET! \e[0m"
 echo "-----------------------------------------------------------------------------------------------"
 sudo apt-get update -yyq
-echo "Installere pakker som trengs for polybar" && sudo apt-get install $POLYBARPAKKER -yyq 
+echo "Installere pakker som trengs for polybar" && sudo apt-get install $POLYBARPAKKER  -yyq 
 echo "----------------------------------------"
+echo "Installere valgfrie pakker for polybar" && sudo apt-get install $POLYBARVALGFRITT -yyq
 echo "-----------------------------------------------------------------------------------------------"
 echo "Setter opp polybar med build script fra github"
 echo "-----------------------------------------------------------------------------------------------"
@@ -130,27 +132,23 @@ mkdir -p "$GIT"polybar/build
 echo "-----------------------------------------------------------------------------------------------"
 echo "build.sh kommer til å ta sin tid men polybar blir satt opp automatisk nå"
 echo "-----------------------------------------------------------------------------------------------"
-cd "$GIT"polybar && ./build.sh -A 
+cd "$GIT"polybar && ./build.sh 
 cd "$GIT"polybar/build && make userconfig
 echo "-------------------------"
 echo "Lager config for polybar"
 echo "------------------------"
-sleep 5
-echo "-------------------------"
-echo "Startert polybar"
-echo "------------------------"
-/usr/local/bin/polybar example 
-sleep 5
-killall /usr/local/bin/polybar
 echo "--------------------"
 echo "FERDIG MED POLYBAR"
-echo "--------------------"
+echo "-----------------------------------------------------------------------------------------------"
+echo "For mer info sjekk ut "$POLYBARURL""
+echo "-----------------------------------------------------------------------------------------------"
 exit
 	}
 
 if  [ "$1" == "--polybar" ];then
 	github-mappen
 	polybar
+	avslutter
 	exit
 fi
 
