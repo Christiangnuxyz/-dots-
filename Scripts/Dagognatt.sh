@@ -2,6 +2,8 @@
 
 # macOS likende bakgrunn script
 
+# Kilder: https://twitter.com/trongthanh/status/1011470275957800960?ref_src=twsrc%5Etfw%7Ctwcamp%5Etweetembed%7Ctwterm%5E1011470275957800960&ref_url=https%3A%2F%2Fwww.omgubuntu.co.uk%2F2018%2F06%2Fmacos-mojave-dynamic-background-linux
+
 # Variabler 
 
 # Mapper 
@@ -15,6 +17,7 @@ GNOMEXML="$HOME/Bilder/GNOME-XML-Backgrunner"
 
 MOJAVEBAKGRUNNURL="https://files.rb.gd/mojave_dynamic.zip" 
 GNOMEMOJAVEXML="https://gist.githubusercontent.com/trongthanh/7d632e90687e1bc219e1f3262d337702/raw/8659a5432ad1ace0de3c8062435400db8a68f1cf/mojave.xml"
+
 
 # Filer
 
