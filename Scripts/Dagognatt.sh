@@ -68,15 +68,15 @@ fi
 setupbakground() {
 if test -e "$FILEXML"
 then
-touch "$GNOMEXML"/"$FILEXML" 
-echo "----------------------------------------------------------------"	
-echo "Bruker touch for å oppdater "$FILEXML" som GNOME 3 bakgrunn"
-echo "----------------------------------------------------------------"	
-else	
 echo "----------------------------------------------------------------"	
 echo "Setter "$FILEXML" som GNOME 3 bakgrunn"
 echo "----------------------------------------------------------------"	
-gsettings set org.gnome.desktop.background picture-uri "file:"$GNOMEXML""/"$FILEXML" && gsettings set org.gnome.desktop.screensaver picture-uri "file:"$GNOMEXML""/"$FILEXML"
+gsettings set org.gnome.desktop.background picture-uri "file:"$GNOMEXML""/"$FILEXML" && gsettings set org.gnome.desktop.screensaver picture-uri "file:"$GNOMEXML""/"$FILEXML"	
+else
+touch "$GNOMEXML"/"$FILEXML" 
+echo "----------------------------------------------------------------"	
+echo "Bruker touch for å oppdater "$FILEXML" som GNOME 3 bakgrunn"
+echo "----------------------------------------------------------------"		
 fi
 }	
 
