@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Reinstallsjon script for Ubuntu
 
@@ -11,55 +11,62 @@
 
 
 # Variabler:
-SISTENDRET="26.feb.2019"
-NYTT="Lagt til variabel BACKUPPROGRAMMER programmevarer som brukes til backup fra GUI og gnomeshellextensions funksjonen for å gjøre det letter med GNOMEEXTENSION  og ny versjon av scripet"
+SISTENDRET="26.mars.2019"
+NYTT="Lagt til steam-devices for bruk av kontrollere med Steam"
 VER="Versjon 1.8.9"
 OS="Testet sist på Ubuntu 18.10"
-ENDRINGER="Flyttet grsync fra UTVIKLING variabelen & akriverer dash-to-dock extension & små bug fikses"
-FJERNET="Fjernet GNOME shell utvidelser fra gnome3 funksjonen"
+ENDRINGER="Ingen endringer"
+FJERNET="Ingenting fjernet"
 KODENAVN="$(lsb_release -sc)"
 
 # Pakker
 BASIC="lxrandr pavucontrol synaptic software-properties-common  terminator transmission-gtk apparmor"
 SIKKERHET="gufw clamtk chkrootkit rkhunter gpgv2 gtkhash seahorse"
-MEDIA="libvlc-bin vlc handbrake mkchromecast youtube-dl mpv gimp audacity geary libreoffice flameshot"
+MEDIA="libvlc-bin vlc handbrake mkchromecast youtube-dl mpv gimp gimp-plugin-registry audacity geary libreoffice flameshot"
 OPPTAK="kazam"
 TILLEGG="caffeine alarm-clock-applet"
 UTVIKLING="filezilla zeal sqlitebrowser"
-TERMINAL="neofetch at tldr htop pv zsh powerline unzip shellcheck curl git buku openssh-client rsync tree net-tools"
-METADATA="libimage-exiftool-perl"
-FJERNSTRYING="openssh-server rclone"
 SPILL="pcsx2 lgogdownloader xboxdrv"
-SPILLEXSTRAPAKKER="libboost-program-options1.65.1 libboost-regex1.65.1"
+SPILLEXSTRAPAKKER="libboost-program-options1.65.1 libboost-regecx1.65.1"
 FONTS="fonts-firacode fonts-league-spartan fonts-powerline fonts-emojione fonts-opendyslexic"
 FREEVIRTUAL="gnome-boxes"
-PAKKESYSTEMER="snap snapd flatpak"
 BACKUPPROGRAMMER="grsync backintime-gnome"
 
+
+# Pakker som brukers fra kommandolinjen 
+TERMINAL="neofetch at tldr htop pv zsh powerline unzip shellcheck curl git buku openssh-client rsync tree net-tools"
+TERMINALNETTVERK="resolvconf network-manager"
+TERMINALEPOST="pst-utils"
+METADATA="libimage-exiftool-perl"
+FJERNSTRYING="openssh-server rclone"
+PAKKESYSTEMER="snap snapd flatpak"
+
+
 # Språk pakkker 
+SPRÅKPAKKER="hunspell"
 ENGELSK="hunspell-en-ca libreoffice-help-en-us hunspell-en-au libreoffice-l10n-en-za libreoffice-help-en-gb hunspell-en-gb libreoffice-l10n-en-gb hunspell-en-za mythes-en-au hyphen-en-ca hyphen-en-us mythes-en-us hyphen-en-gb gimp-help-en"
 NORSK="language-pack-nb language-pack-nb-base language-pack-gnome-nb libreoffice-l10n-nb firefox-locale-nb wnorwegian hunspell-no mythes-no hyphen-no"
 
 
-# Pakker som følger med som standard fra Ubuntu av Canoical
+# Pakker som følger med som standard installasjonen av Ubuntu fra Canoical
 CANONICAL="thunderbird* cheese simple-scan gnome-mines aisleriot gnome-sudoku gnome-mahjongg brasero orca gksu"
-# Disse pakkene brukes for å melde om feil til Ubuntu og Canoical
+# Disse pakkene brukes for å melde om feil som oppstår på Ubuntu til Canoical
 VALGFRIT="apport-gtk ubuntu-report"
 
 
 # Maskinvare pakker 
 VIRTUALTERMINAL="cpu-checker"
-MASKINVARE="fwupdate"
+MASKINVARE="fwupdate fwupd"
 TEMPERATUR="lm-sensors hddtemp psensor"
-HARDDISK="bleachbit gparted gdmap baobab gnome-disk-utility testdisk"
+HARDDISK="bleachbit gparted gdmap baobab gnome-disk-utility testdisk smartmontools"
 HARDDISKCRYPT="cryptsetup"
 FILSYSTEMSUPPORT="exfat-utils exfat-fuse hfsprogs"
 
 # Pakker som innholder EULA eller andre non-freee software som mediakodekser osv
-EULA="ubuntu-restricted-extras steam libsdl2-2.0-0 libvde0 libvdeplug2"
+EULA="ubuntu-restricted-extras steam steam-devices libsdl2-2.0-0 libvde0 libvdeplug2"
 DVDSUPPORT="libdvd-pkg libdvdcss-dev libdvdcss2"
 VIRTALBOXEULA="virtualbox libqt5opengl5 libvde0 libvdeplug2 virtualbox-qt virtualbox-ext-pack vde2 virtualbox-guest-additions-iso"
-
+HEICSUPPORT="libheif-examples libheif1"
 
 # Pakker som har med utseende på programmvarene og skrivebord generelet
 
@@ -70,6 +77,7 @@ BIONICBEAVER="suru-icon-theme"
 IKONER="moka-icon-theme pocillo-icon-theme"
 TEMA="arc-theme"
 
+
 # Snap pakker
 SNAPPAKKER="spotify"
 SNAPBIONIC="communitheme"
@@ -77,13 +85,13 @@ CANONICALSNAP="gnome-system-monitor"
 SNAPGTK="gtk-common-themes gtk2-common-themes"
 
 # Appimage
-KEEPASSXCAPPIMAGE="https://github.com/keepassxreboot/keepassxc/releases/download/2.3.4/KeePassXC-2.3.4-x86_64.AppImage"
+KEEPASSXCAPPIMAGE="https://github.com/keepassxreboot/keepassxc/releases/download/2.4.0/KeePassXC-2.4.0-x86_64.AppImage"
 
 # Appimage sin nedlastings mappe
 Nedlastingermappe="$HOME/Appimage/"
 
 # Appimage SHA-256-digest
-KEEPASSXCAPPIMAGESHA="https://github.com/keepassxreboot/keepassxc/releases/download/2.3.4/KeePassXC-2.3.4-x86_64.AppImage.DIGEST"
+KEEPASSXCAPPIMAGESHA="https://github.com/keepassxreboot/keepassxc/releases/download/2.3.4/KeePassXC-2.4.0-x86_64.AppImage.DIGEST"
 
 # For luke smith sitt CSV script som er modifisert av meg for Ubuntu 
 
@@ -106,15 +114,22 @@ VANLIGGNOME="gnome-session gnome-session-wayland"
 
 # GNOME 3 pakker
 
-GNOME="gnome-control-center gnome-font-viewer gnome-calendar gnome-calculator  gnome-system-monitor gnome-color-manager gnome-software-plugin-flatpak  gnome-software-plugin-snap"
+GNOME="gnome-control-center gnome-font-viewer  gnome-calculator  gnome-system-monitor gnome-color-manager gnome-software-plugin-flatpak  gnome-software-plugin-snap"
+GNOMEDIGTALIVET="gnome-calendar evolution gnome-contacts"
 GNOMETILPASS="gnome-tweak-tool dconf-editor dconf-cli"
 GNOMESIKKERHET="clamtk-gnome clamtk-nautilus seahorse-nautilus"
 GNOMEEXTENSION=" gnome-shell-extensions chrome-gnome-shell gnome-shell-extension-appindicator  gnome-shell-extension-weather gnome-shell-extension-dashtodock gnome-shell-extension-mediaplayer gnome-shell-extension-caffeine"
 GNOMEVPN="network-manager-openvpn-gnome network-manager-pptp-gnome network-manager-l2tp-gnome"
+GNOMENETTVERK="network-manager-ssh-gnome"
 GNOMEPROGRAMMER="gnome-todo gnome-usage gnome-screenshot tilix"
 UBUNTUGNOMEPAKKER="gnome-shell-extension-ubuntu-dock"
-COSMICCUDDELFISH="gnome-shell-extension-gsconnect peek feedreader"
 HELSE="safeeyes"
+
+
+# Pakker for Ubuntu 18.10 
+
+COSMICCUDDELFISH="gnome-shell-extension-gsconnect peek picard feedreader"
+
 
 # Pakker som fjenes hvis det er gnome 3
 
@@ -144,8 +159,10 @@ AMAZON="/usr/share/applications/ubuntu-amazon-default.desktop"
 # URL-er
 VIRTALBOXURL="https://www.virtualbox.org/wiki/Downloads"
 PROTONINFO="https://github.com/ValveSoftware/Proton/wiki/Requirements"
-FWUPSUPPORTETURL="https://fwupd.org/lvfs/devicelist"
 GNOMESHELLINFO="https://extensions.gnome.org/local/"
+
+# Maskinvare URL-er 
+FWUPSUPPORTETURL="https://fwupd.org/lvfs/devicelist"
 
 # FLATPAK GTK TEAMER
 
@@ -267,7 +284,7 @@ laptop() {
 	if echo "$XDG_CURRENT_DESKTOP" | grep "GNOME"
 	then
 		# Aktivere sånn at GNOME 3 viser batteri prossent i gnome-shell 	
-		echo "------------------------------------------------"
+		echo "-------------------------------------------------"
 		echo "Aktivere at batteri prossent vis i GNOME shell"
 		echo "-------------------------------------------------"
 		gsettings set org.gnome.desktop.interface show-battery-percentage true
@@ -321,7 +338,6 @@ fi
 
 
 amazon() {
-
 # Fjerner  Amazon.dekstop snarveien til Amazon.com fra standard Ubuntu 
 echo "Sjekker om Amazon.com snarveien er i installasjonen...."  >/dev/null
 if [ ! -f $AMAZON ]
@@ -350,7 +366,7 @@ canonicalpakker() {
 if dpkg -l gstreamer1.0-fluendo-mp3 ubuntu-web-launchers 1>/dev/null
 then
 echo "----------------------------------------------------------------------------------------------------------------------------------------------"
-echo "Fjerner pakker som Canonical putter i Ubuntu som standard"
+echo "Fjerner pakker som Canonical putter i standard installasjonen av Ubuntu"
 echo "----------------------------------------------------------------------------------------------------------------------------------------------"
 sudo apt-get purge gstreamer1.0-fluendo-mp3 ubuntu-web-launchers -yyq 
 else
@@ -362,7 +378,9 @@ fi
 
 
 canonicalfirefox() {
+echo "----------------------------------------"
 echo "Sjekker om Mozilla Firefox er installert" && dpkg --get-selections | grep -qw firefox
+echo "----------------------------------------"
 while true;  do
 read -r -p  "Vil du ta å reste Firefox til sånn som Firefox er når den kommer fra Mozilla eller vil du forsatte å bruke Canonical sin?, Det vil fjerne alle ting du har endret på i firefox så ta backup av $HOME/.mozilla/firefox/ $HOME/.mozilla/firefox/profiles.ini  (j/n)?" valgfirefox
 case "$valgfirefox" in
@@ -410,29 +428,29 @@ if echo "$XDG_CURRENT_DESKTOP" | grep -qw "GNOME"
 	echo "---------------------------------------------------"
 	echo "Fjerner disse $FJERNVISGNOME siden de finnes alt i GNOME"
 	sudo apt-get purge $FJERNVISGNOME -yyq 
-		echo "---------------------------------------------------------------------------------------------------------------"
-	echo "Installere GNOME 3 pakker fordi Skrivebordsmiljø er GNOME" && sudo apt-get install $TEMA $IKONER $GNOME $GNOMETILPASS $GNOMEPROGRAMMER  $GNOMESIKKERHET -yyq
-	echo "Installere GNOME 3 shell extensions pakker fordi Skrivebordsmiljø er GNOME" && sudo apt-get install $GNOMEEXTENSION -yyq
-	echo "---------------------------------------------------------------------------------------------------------------"
+		echo "-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
+	echo "Installere GNOME 3 pakker fordi Skrivebordsmiljø er GNOME" && sudo apt-get install $TEMA $IKONER $GNOME $GNOMEDIGTALIVET $GNOMENETTVERK $GNOMETILPASS $GNOMEPROGRAMMER  $GNOMESIKKERHET -yyq
+	echo "Installere GNOME 3 shell disse "$GNOMEEXTENSION" extensions pakker fordi Skrivebordsmiljø er GNOME" && sudo apt-get install $GNOMEEXTENSION -yyq
+	echo "--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
 	echo "Installere Canonical sitt nye GTK tema og vanlig GTK temaer som snap" && sudo snap install $SNAPBIONIC $SNAPGTK
     echo "---------------------------------------------------------------------------------------------------------------"
-    echo "---------------------------------------------------------------------------------------------------------------"
-    echo "Installere støtte for å sett opp en VPN på flere måtter i GNOME 3" && sudo apt-get install $GNOMEVPN -yyq
-    echo "---------------------------------------------------------------------------------------------------------------"
-    echo "---------------------------------------------------------------------------------------------------------------"
-    echo "Vil du å installere safeeyes for å en pause fra skjermen?" && sudo apt-get install $HELSE
-    echo "---------------------------------------------------------------------------------------------------------------"
+    echo "----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
+    echo "Installere disse "$GNOMEVPN" pakkene for å få støtte sett opp en VPN-er på flere måtter i GNOME 3" && sudo apt-get install $GNOMEVPN -yyq
+    echo "----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
+    echo "-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
+    echo "Vil du å installere "$HELSE" for å en pause fra skjermen?" && sudo apt-get install $HELSE
+    echo "-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
     echo "Ønsker du og søke etter filer med gnome 3 sånn som windows utforsker?" && sudo apt-get install tracker
-    echo "---------------------------------------------------------------------------------------------------------------"
+    echo "--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
 
 gnomeshellextensions() {
 
 # Aktiver forskjellige GNOME shell extensions
 if echo "$XDG_CURRENT_DESKTOP" | grep -qw "GNOME"
 	then
-    echo "---------------------------------------------------------------------------------------------------------------"
+    echo "------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
 	echo "Sjekke ut "$GNOMESHELLINFO" for oppdateringer til GNOME 3 shell extensions. NB krever nettleser utvidelse"
-    echo "---------------------------------------------------------------------------------------------------------------"
+    echo "-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
 	sleep 2
     echo "---------------------------------------------------------------------------------------------------------------"
     echo "Aktivere dash-to-dock extension for GNOME shell" && gnome-shell-extension-tool --enable-extension /usr/share/gnome-shell/exentesions/"$DASHTODOCK" 
@@ -589,7 +607,7 @@ echo "---------------------------------------------------------------"
 then
 # Fjerner GNOME-boxes på grunn av at Virtualbox er installert
 echo "---------------------------------------"
-echo "Fjener gnome-boxes"
+echo -e "\e[1;31m Fjener gnome-boxes \e[0m"
 echo "---------------------------------------"
 sudo apt-get purge gnome-boxes -yyq
  echo "---------------------------------------"
@@ -597,7 +615,7 @@ sudo apt-get purge gnome-boxes -yyq
  echo "---------------------------------------"
 else
 echo "---------------------------------------------------------------"
-echo "gnome-boxes er ikke installert"
+echo -e "\e[1;31m gnome-boxes er ikke installert \e[0m"
 echo "---------------------------------------------------------------"
 fi
 }
@@ -632,16 +650,19 @@ pakkerformater()  {
 echo "---------------------------------------------------------------------------------------------"
 echo "Oppdater snap pakker" && sudo snap refresh
 echo "---------------------------------------------------------------------------------------------"
-# Fjerner snapper som Canonical putter i standard Ubuntu som er unødvendige 
-echo "Fjerner disse $CANONICALSNAP" && sudo snap remove $CANONICALSNAP
+# Fjerner snapper som Canonical putter i standard installasjon av Ubuntu som jeg syns er unødvendige 
+echo -e "\e[1;31m Fjerner disse "$CANONICALSNAP" pakkene \e[0m" && sudo snap remove $CANONICALSNAP
 # Installer nå bare spotify fra $SNAPPAKKER men kommer nok til å legge til flere i fremtiden 
-echo "Installer disse $SNAPPAKKER" &&  sudo snap install $SNAPPAKKER
+echo "Installer disse "$SNAPPAKKER" pakkene" &&  sudo snap install $SNAPPAKKER
 echo "---------------------------------------------------------------------------"
 echo "Legger til flathub støtte for å kunne last ned flatpak pakker fra flathub"
 echo "---------------------------------------------------------------------------"
 sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 echo "Oppdater flatpak"
 sudo flatpak update -y 
+}
+
+flatpakgtktema() {
 echo "---------------------------------------------------------------------------------------------"
 echo "Installere Ubuntu 18.04 Bioic Beaver LTS sitt GTK tema for flatpak apper også"
 echo "---------------------------------------------------------------------------------------------"
@@ -671,6 +692,24 @@ echo -e "\e[1;31m Du har IKKE to skjermer koblet til nå \e[0m"
 echo "--------------------------------------------------------------"
 fi
 }
+
+gnome3flatpak(){
+echo "----------------------------------------------------------------------------"
+echo "Sjekker om du bruker GNOME 3 for å kunne isntallere DynamicWallpaperEditor"
+echo "---------------------------------------------------------------------------"
+if echo "$XDG_CURRENT_DESKTOP" | grep -qw "GNOME"
+	then
+echo "-------------------------------------------------------------------------------------------------------"
+echo "Installere DynamicWallpaperEditor for GNOME sånn at man slipper å redigere XML filen med tekstedtioren"
+echo "-------------------------------------------------------------------------------------------------------"	
+sudo flatpak install flathub com.github.maoschanz.DynamicWallpaperEditor -y
+else 
+echo "--------------------------------------------------------------"
+echo -e "\e[1;31m Du bruker ikke GNOME 3 \e[0m"
+echo "--------------------------------------------------------------"
+fi
+}
+
 
 
 
@@ -751,16 +790,16 @@ echo "--------------------------------------------------------------------------
 echo "Har du har en laptop?, legg til --laptop for å installere anbefalt pakker til laptopen som støtte for bluetooth osv"
 echo "--------------------------------------------------------------------------------------------------------------------"
 echo "--------------------------------------------------------------------------------------------------------------------"
-echo "Vil du kun fjern styre denne PC-en og sync ting til skyen med rclone,Hvis ja installer disse pakkene" && sudo apt-get install $FJERNSTRYING
+echo "Vil du kun fjern styre denne PC-en og sync ting til skyen med rclone,Hvis ja installer disse "$FJERNSTRYING" pakkene" && sudo apt-get install $FJERNSTRYING
 echo "--------------------------------------------------------------------------------------------------------------------"
 echo "---------------------------------------------------------------------------------------------------------------"
 echo "Vil du å installere disse "$BACKUPPROGRAMMER" pakkene for å kunne ta backup fra GUI" && sudo apt-get install $BACKUPPROGRAMMER --install-suggests
 echo "---------------------------------------------------------------------------------------------------------------"
-echo "Vil du bruke PC-en din på norsk?,Hvis ja installer disse pakkene" && sudo apt-get install $NORSK
+echo "Vil du bruke PC-en din på norsk?,Hvis ja installer disse pakkene" && sudo apt-get install $NORSK --install-suggests
 echo "--------------------------------------------------------------------------------------------------------------------"
-echo "Fjerner disse "$CANONICAL" Ubuntu pakkene jeg IKKE liker..."  && sudo apt-get purge $CANONICAL -yqq
+echo "Fjerner disse "$CANONICAL" Ubuntu pakkene jeg IKKE liker..."  && sudo apt-get purge $CANONICAL -yyq
 echo "---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
-echo "Du må godta EULA/Lisensen til disse $EULA for å kun installere alle av dem for virtualbox kan det også være lurt og sjekke $VIRTALBOXURL for nyere versjoner av virtualbox" && sudo apt-get install $EULA $VIRTALBOXEULA
+echo "Du må godta EULA/Lisensen til disse "$EULA" for å kun installere alle av dem for virtualbox kan det også være lurt og sjekke "$VIRTALBOXURL" for nyere versjoner av virtualbox" && sudo apt-get install $EULA $VIRTALBOXEULA
 echo "---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
 echo "---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
 echo "Ønsker du og installer "$SPILL" for å kunne spille PS2 spill og last ned spill fra GOG med terminalen og støtte for xbox kontrollere" && sudo apt-get install $SPILL --install-suggests
@@ -772,19 +811,17 @@ echo "--------------------------------------------------------------------------
 sudo apt-get install $DVDSUPPORT
 sleep 5
 sudo dpkg-reconfigure libdvd-pkg
+echo "----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"	
+echo "Ønsker du å ha støtte fo Apple sitt HEIC bilde format. Du kan få søtte for HEIC med å installer disse "$HEICSUPPORT" pakkene" && sudo apt-get install $HEICSUPPORT 
+echo "-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
 echo "-------------------------------------------------------------------------------------------------------------------"
 echo "NB: for å kunne bruke Steam sin Proton må disse kravene være oppfylt sjekke ut "$PROTONINFO" for mer info" && sleep 5
 echo "------------------------------------------------------------------------------------------------------------------"
 echo "---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
-echo "Hvis du ønsker et free software til alternativ virtualbox kan du installere "$FREEVIRTUAL"" && sudo apt-get install $FREEVIRTUAL
-echo "-----------------------------------------------------------------------------------------"
-# Åpener dialogbox hvor man kan se prosent av installasjonen
-
-for i in $(seq 1 100)
-do
-    sleep 0.1 
-    echo $i && sudo apt-get install $BASIC $ENGELSK $FONTS $BIONICBEAVER $SIKKERHET $FILSYSTEMSUPPORT $HARDDISK $HARDDISKCRYPT $MEDIA $OPPTAK $METADATA $IKONER $TEMA $UTSEENDE $PROGRAMVARERTEMA $VIRTUALTERMINAL $ANDROID $UTVIKLING $TILLEGG $TERMINAL $PAKKESYSTEMER  $TEMPERATUR $MASKINVARE -yqq
-done | whiptail --title '"Installer alle pakken som er free software...' --gauge 'Installer pakker fra Ubuntu repo...' 6 60 0
+echo "Hvis du ønsker et free software til alternativ virtualbox kan du installere "$FREEVIRTUAL"" && sudo apt-get install $FREEVIRTUAL 
+echo "----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
+echo "Installer alle pakken som er free software fra Ubuntu repo"
+sudo apt-get install $BASIC $ENGELSK $FONTS $BIONICBEAVER $SIKKERHET $FILSYSTEMSUPPORT $HARDDISK $HARDDISKCRYPT $MEDIA $OPPTAK $METADATA $IKONER $TEMA $UTSEENDE $PROGRAMVARERTEMA $VIRTUALTERMINAL $ANDROID $UTVIKLING $TILLEGG $TERMINAL $TERMINALNETTVERK $TERMINALEPOST $PAKKESYSTEMER  $TEMPERATUR $MASKINVARE -yyq
 echo "--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
 }
 
@@ -797,7 +834,7 @@ then
 echo "-------------------------------------------------------------------------------------------------------------------"
 echo "UEFI/BIOS-en firmware din kan oppdaters med help av fwupdate fra Ubuntu"
 echo "------------------------------------------------------------------------------------------------------------------"
-echo "Sjekke ut $FWUPSUPPORTETURL for mer info om oppdateringer rundt firmware fra forskjelige produsenter"
+echo "Sjekke ut "$FWUPSUPPORTETURL" for mer info om oppdateringer rundt firmware fra forskjelige produsenter"
 echo "------------------------------------------------------------------------------------------------------------------"
 sleep 2
 else	
@@ -825,7 +862,7 @@ echo "Setter zsh som standard shll" && chsh -s $(which zsh)
 echo "-----------------------------"
 else
 echo "$0" | grep "zsh"
-echo "---------------------------------"
+echo "----------------------------------"
 echo "zsh er alt satt som standard shell"
 echo "----------------------------------"
 fi
@@ -834,7 +871,7 @@ fi
 setupssh() {
 # Sjekker om Secure Shell (SSH) er satt opp 
 
-if ls $HOME/.ssh/ | grep "id_"
+if test -d $HOME/.ssh/
 then
 echo "--------------------" 
 echo "SSH er alt satt opp"
@@ -843,7 +880,7 @@ else
 echo "--------------------" 
 echo "Setter opp SSH"
 echo "--------------------"	
-mkdir -p "$HOME/.ssh"  && ssh-keygen
+mkdir -p "$HOME/.ssh" && ssh-keygen
 fi
 } 
 
@@ -878,7 +915,9 @@ checkvirtualbox
 virtualbox
 appimagepakker
 pakkerformater
+flatpakgtktema
 skjermer
+gnome3flatpak
 temperatur-setup
 FJERNDVD
 avslutter

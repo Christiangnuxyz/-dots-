@@ -1,12 +1,13 @@
 #!/bin/bash
+
 # Legger til Ubuntu PPAS
 
 # Variabler:
-SISTENDRET="26.feb.2019"
-ENDRINGER="Oppdatert kommentarer"
-TINGFJERNET="Fjerner at NVIDIA pakkerene installers en etter en"
-NYTT="Lagt til NVIDIA32BITPAKKER og NVIDIAPAKKER som variabler"
-VER="Versjon 1.0.9"
+SISTENDRET="25.mars.2019"
+ENDRINGER="Lagt til Lutris sin nye PPA under og Lagt til setup_dxvk.sh install under --spill og oppdatert NVIDA driver versjon til 418"
+TINGFJERNET="Fjernet Lutris sin gamle PPA fra --spill og annen gammel info"
+NYTT="Lagt til NVIDIAVULKANPAKKER som en variable og NVIDAFLATPAKVERJON"
+VER="Versjon 1.1.1"
 OS="Testet på Ubuntu 18.10"
 KODENAVN="$(lsb_release -sc)"
 
@@ -18,24 +19,34 @@ FLATPAKPPA="ppa:alexlarsson/flatpak"
 NVIDIAPPA="ppa:graphics-drivers/ppa"
 
 # NVIDA grafikkort ppa info
-VERSJON="415"
-NVIDIAPROBLEMER="med nvidia-driver-$VERSJON er det problemer med GetThreadContext Failed i spill som bruker Untiy med Steamplay Proton så midlertig fix er å bruke PROTON_USE_WINED3D11=1 %command% i som oppstart flag"
+VERSJON="418"
+NVIDAFLATPAKVERJON="56"
+NVIDIAPROBLEMER="Sjekker her https://www.nvidia.com/download/driverResults.aspx/145182/en-us om nvidia grafikkort ditt støtter nvidia-driver-$VERSJON"
+
 
 # NVIDA grafikkort ppa pakker
 
 NVIDIA32BITPAKKER="libnvidia-gl-$VERSJON:i386 libnvidia-common-$VERSJON:i386 libnvidia-decode-$VERSJON:i386 libnvidia-decode-$VERSJON:i386" 
 NVIDIAPAKKER="xserver-xorg-video-nvidia-$VERSJON nvidia-driver-$VERSJON libnvidia-cfg1-$VERSJON"
 
+# NVIDIA sine Vulkan pakker
+
+NVIDIAVULKANPAKKER="libvulkan1 libvulkan1:i386"
+
 # Nødvendige pakker for at scripet skal funke
 
 # TEMA ppa og Pakker
 UBUNTUPAKKER="software-properties-gtk ubuntu-drivers-common"
 
-# GNOME ppa og pakker
+# Synciting pakker 
+SYNCTHINGDEB="curl"
+
+# GNOME ppaer
 LOLLYPOP="ppa:gnumdk/lollypop"
-GNOMEPROGRAMVARER="lollypop piper"
 PIPER="ppa:libratbag-piper/piper-libratbag-git"
 
+# GNOME ppa pakker
+GNOMEPROGRAMVARER="lollypop piper"
 PIPERDEB="liblur3 libratbag-tools lur-command ratbagd"
 
 # Nødvendige pakker for at --laptop skal funke
@@ -71,6 +82,7 @@ FONTER="fonts-roboto fonts-noto fonts-noto-color-emoji"
 
 # For --spill
 
+LUTRIS="ppa:lutris-team/lutris"
 
 #  Wine Spill pakker for Battle.net fra Ubuntu repo
 BATTLENET="ttf-mscorefonts-installer libgnutls30:i386 libldap-2.4-2:i386 libgpg-error0:i386 libsqlite3-0:i386"
@@ -79,10 +91,6 @@ BATTLENETWINE="winbind"
 # For Wine generelt
 WINEPAKKER="wine-staging-amd64 wine-staging-i386"
 
-# GNOME Gsettings
-GTK="Plata-Noir-Compact"
-IKON="Papirus-Dark"
-ADPTAFONT="Roboto"
 
 # URL-er
 
@@ -90,7 +98,11 @@ ADPTAFONT="Roboto"
 
 PCSX2INFO="https://launchpad.net/~gregory-hainaut/+archive/ubuntu/pcsx2.official.ppa/+packages"
 PROTONINFO="https://github.com/ValveSoftware/Proton#runtime-config-options"
+BATTLENETINFO="https://github.com/lutris/lutris/wiki/Game:-Blizzard-App"
 
+# DXVK URL-er for --spill 
+DXVK096DEB="http://ftp.br.debian.org/debian/pool/main/d/dxvk/dxvk_0.96+ds1-1_all.deb"
+DXVKWINE64DEB="http://ftp.br.debian.org/debian/pool/main/d/dxvk/dxvk-wine64-development_0.96+ds1-1_amd64.deb"
 
 # GTK TEMA URL-er 
 PLATATHEMEURL="https://gitlab.com/tista500/plata-theme#plata-theme"
@@ -100,6 +112,12 @@ ADAPTATHEMEURL="https://github.com/adapta-project/adapta-gtk-theme#-adapta-gtk-t
 PAPIRUSIKONTEMAURL="https://github.com/PapirusDevelopmentTeam/papirus-icon-theme#contents"
 
 # Info 
+
+# GNOME Gsettings
+GTK="Plata-Noir-Compact"
+IKON="Papirus-Dark"
+ADPTAFONT="Roboto"
+
 FONTS="Roboto og Noto-Sans"
 
 # For -vm 
@@ -110,19 +128,17 @@ VIRTUALBOXDEP="libqt5opengl5"
 
 # For --vm URL
 # Må prøve og finne ut av hvorfor jeg ikke får installert virtualbox-6.0 fra apt der for er VIRTUALBOXDEB her
-VIRTUALBOXDEB="https://download.virtualbox.org/virtualbox/6.0.0/virtualbox-6.0_6.0.0-127566~Ubuntu~bionic_amd64.deb"
-VIRTUALBOXEXT="https://download.virtualbox.org/virtualbox/6.0.0/Oracle_VM_VirtualBox_Extension_Pack-6.0.0.vbox-extpack"
-
+VIRTUALBOXDEB="https://download.virtualbox.org/virtualbox/6.0.4/virtualbox-6.0_6.0.4-128413~Ubuntu~bionic_amd64.deb" 
+VIRTUALBOXEXT="https://download.virtualbox.org/virtualbox/$VIRTUALBOXVERSJON/Oracle_VM_VirtualBox_Extension_Pack-6.0.4.vbox-extpack"
+VIRTUALBOXVERSJON="6.0.4"
 # Filer for --vm
-VBOXEXTPACK="Oracle_VM_VirtualBox_Extension_Pack-6.0.0.vbox-extpack"
+VBOXEXTPACK="Oracle_VM_VirtualBox_Extension_Pack-$VIRTUALBOXVERSJON.vbox-extpack"
 
 # Hashes for --vm
-VIRTUALBOXSUMS="https://www.virtualbox.org/download/hashes/6.0.0/SHA256SUMS"
+VIRTUALBOXSUMS="https://www.virtualbox.org/download/hashes/"$VIRTUALBOXVERSJON"/SHA256SUMS"
 
-# Pakken nedfor er ikke i bruk 
+FJERNINGVIRTUALBOXREPO="virtualbox virtualbox-qt virtualbox-ext-pack virtualbox-guest-additions-iso virtualbox-dkms"
 
-#WINEDEPBIONIC="libavcodec57 libavcodec57:i386" 
-#WINEDEPCOSMIC="libavcodec58 libavutil56 libvkd3d1  libavcodec58:i386 libavutil56:i386 libc6:i386 ibvkd3d1:i386"
 
 # Funksjoner
 installer-ubuntu-ppaer-hjelp() {
@@ -197,7 +213,7 @@ laptop() {
         echo "---------------------------------------------------------"
     else
     echo "------------------------------------------------"
-    echo -e "\e[1;31m Du har IKKÈ batteri i laptop-en \e[0m" && sudo apt-get purge $GAMLELAPTOPPAKKER $TLP -yyq  >/dev/null
+    echo -e "\e[1;31m Du har IKKÈ batteri i laptop-en \e[0m" && sudo apt-get purge $GAMLELAPTOPPAKKER $TLP -yyq && sudo apt-get --purge autoremove -yyq 
     echo "------------------------------------------------"
     exit
     fi
@@ -306,7 +322,7 @@ echo "Sjekker om flatpak er installert for å legge til NVIDIA flatpak driverne"
 echo "--------------------------------------------------------------------------" 
 if dpkg -l | grep -E "flatpak|nvidia-driver-$VERSJON" > /dev/null
 then
-sudo flatpak install flathub org.freedesktop.Platform.GL.nvidia-$VERSJON-18/x86_64/1.4 -y 
+sudo flatpak install flathub org.freedesktop.Platform.GL.nvidia-$VERSJON-$NVIDAFLATPAKVERJON/x86_64/1.4 -y 
 else
 echo "-------------------------------------------------------------------------------------------------------------------"    
 echo "\e[1;31m Flatpak eller nvidia-driveren er ikke installert så flatpak nvidia-driveren-$VERSJON blir ikke lagt til \e[0m"
@@ -315,14 +331,11 @@ fi
 }
 
 nvidaproblemer() {
-if lspci | grep -qw "NVIDIA" && dpkg -l steam 2>/dev/null
+if lspci | grep -qw "NVIDIA" 
 then
-echo "--------------------------------------------------------------------------"    
-echo -e "\e[1;31m Det er nå "$NVIDIAPROBLEMER" så gå videre om du kan fikse dette \e[0m"
-echo "--------------------------------------------------------------------------"   
-echo "Sjekke ut "$PROTONINFO" for mer tips om feilsøking av Steamplay"
-echo "--------------------------------------------------------------------------"
-sleep 5
+echo "------------------------------------------------------------------------------------------------------------------------------------------"    
+echo -e "\e[1;31m "$NVIDIAPROBLEMER"  \e[0m"
+echo "-------------------------------------------------------------------------------------------------------------------------------------------"   
 else 
 echo "---------------------------------------------------------------------"    
 echo "Du bruker ikke NVIDIA grafikkkort så det problemet gjelder ikke deg"
@@ -347,17 +360,19 @@ spill()  {
 echo "-------------------------------------------------------"
 echo "Installere Lutris en spill plattform for spill på Linux"
 echo "--------------------------------------------------------"
-ver=$(lsb_release -sr); if [  $ver != "18.04" -a  $ver != "17.10" -a $ver != "17.04" -a $ver != "16.04" ]; then ver=16.04; fi
-echo "deb http://download.opensuse.org/repositories/home:/strycore/xUbuntu_$ver/ ./" | sudo tee /etc/apt/sources.list.d/lutris.list
-wget -q http://download.opensuse.org/repositories/home:/strycore/xUbuntu_$ver/Release.key -O- | sudo apt-key add -
-sudo apt-get update -yyq
+sudo add-apt-repository --update $LUTRIS -y 
 sudo apt-get install lutris -yyq
 
 blizzard(){
-echo "--------------------------------------------------------------------"
-echo "Pakker til Ubuntu for at blizzard Battle.net skal funke med lutris"
+echo "-----------------------------------------------------------------------------------------------------------------------------------------------------------------------"
+echo "Legger til disse "$BATTLENET" "$BATTLENETWINE" pakkene  til Ubuntu for at Blizzard Battle.net skal funke med lutris"
+echo "-----------------------------------------------------------------------------------------------------------------------------------------------------------------------"
 echo "---------------------------------------------------------------------"
 sudo apt-get install $BATTLENET $BATTLENETWINE -yyq
+echo "-----------------------------------------------------------------------------------------------------------------------------------------------------------------------"
+echo "Sjekke ut "$BATTLENETINFO" for mer info om det skulle oppstå problemer med Blizzard Battle.net"
+echo "-----------------------------------------------------------------------------------------------------------------------------------------------------------------------"
+sleep 5
 echo "-------------------------------------------------------"
 echo "Installere WineHQ for battle.net"
 echo "--------------------------------------------------------"
@@ -384,18 +399,55 @@ sudo apt update -yqq
 sudo apt-get install --install-recommends winehq-staging -yyq
 sudo apt-get upgrade -yyq 
 fi
+}
 
+setupdxvk(){
+echo "-----------------------------------------------------------------------------------"
+echo "Setter opp DXVK for Ubuntu siden DXVK ikke er Ubuntu repo for cosmic/bionic"
+echo "-------------------------------------------------------------------------------------"    
+if echo "$KODENAVN" | grep -E "cosmic|bionic"
+then 
+cd "/tmp/" || exit
+echo "-----------------------------------------------------------------------------------"
+echo "Laster ned DXVK 0.96 deb pakkene"
+echo "-------------------------------------------------------------------------------------"      
+wget $DXVK096DEB && wget $DXVKWINE64DEB
+echo "-----------------------------------------------------------------------------------"
+echo "Installer DXVK 0.96 fikser dependencies problemer"
+echo "-------------------------------------------------------------------------------------"  
+sudo dpkg -i dxvk* 
+sleep 5
+echo "--------------------------------------------------------------------------------------"
+echo "Fikser dependencies problemer"
+echo "-------------------------------------------------------------------------------------"
+sudo apt --fix-broken install -yyq
+sleep 5
+echo "--------------------------------------------------------------------------------------"
+echo "Setter WINEPREFIX for DXVK"
+echo "-------------------------------------------------------------------------------------"
+cd /usr/lib/dxvk/wine64-development/ || exit 
+./setup_dxvk.sh install -y
+else
+echo "$KODENAVN" | grep -qw "disco"   
+echo "-----------------------------------------------------------------------------------"
+echo "Installer DXVK fra Ubuntu disco sitt repo"
+echo "-------------------------------------------------------------------------------------" 
+sudo apt-get install dxvk dxvk-wine32-development dxvk-wine64-development
+fi
+}
+
+nvidiavulkan(){
 echo "---------------------------------------------"
 echo "Sjekker om du har et NVIDIA grafikkkort"
 echo "---------------------------------------------"
 if  lspci | grep -ic --color "NVIDIA" >/dev/null
 then
  echo "---------------------------------------------------------------"
- echo "Du har et NVDIA grafikkkort installere Vulkan for DXVK støtte" && sudo apt-get install libvulkan1 libvulkan1:i386  -yyq 
+ echo "Du har et NVDIA grafikkkort installere Vulkan for DXVK støtte" && sudo apt-get install $NVIDIAVULKANPAKKER -yyq 
  echo "--------------------------------------------------------------"
 else
  echo "----------------------------------------------"
- echo -e "\e[1;31m  Du har IKKE et NVDIA grafikkkort \e[0m" && sudo apt-get purge libvulkan1 libvulkan1:i386 -yyq
+ echo -e "\e[1;31m  Du har IKKE et NVDIA grafikkkort \e[0m" && sudo apt-get purge $NVIDIAVULKANPAKKER  -yyq
  echo "---------------------------------------------"
  exit
 fi
@@ -403,10 +455,6 @@ fi
 
 
 renser(){
-cd /etc/apt/sources.list.d  || exit 
-echo "Fjerner pcsx2 sin ppa" 
-sudo rm gregory-hainaut-ubuntu-pcsx2_official_ppa-cosmic.list  gregory-hainaut-ubuntu-pcsx2_official_ppa-cosmic.list.save 2>/dev/null
-sudo apt-get -yyq    
 echo "Følgende pakker ble automatisk installert og er ikke lenger påkrevet" 2>/dev/null && sudo apt-get autoremove -yyq 
 exit 
  }
@@ -416,6 +464,8 @@ exit
 if  [ "$1" == "--spill" ];then
     spill
     blizzard
+    setupdxvk
+    nvidiavulkan
     renser
     
 fi
@@ -464,7 +514,7 @@ then
 echo "----------------------------------------------------------------"
 echo "Fjerner Virtualbox som er installert fra  Ubuntu repositories"
 echo "------------------------------------------------------------------" 	
-sudo apt-get purge virtualbox virtualbox-qt virtualbox-ext-pack -yyq	
+sudo apt-get purge $FJERNINGVIRTUALBOXREPO-* -yyq	
 echo "----------------------------------------------------------------"
 echo "NB Krever sudo for å ta backup av /etc/apt/sources.list"
 echo "------------------------------------------------------------------" 
@@ -474,19 +524,26 @@ echo "----------------------------------------------------------------"
 echo "Legger til Orcal Virtualbox i /etc/apt/sources.list filen"
 echo "------------------------------------------------------------------"   
 sudo echo deb https://download.virtualbox.org/virtualbox/debian $KODENAVN contrib /etc/apt/sources.list
-echo "----------------------------------------------------------------"
-echo "Later ned og legger til Oracle vbox nøkkeler "
-echo "------------------------------------------------------------------"  
+echo "---------------------------------------------------------------------------------------"
+echo "Later ned og legger til Oracle vbox nøkkeler for Virtualbox "$VIRTUALBOXVERSJON""
+echo "---------------------------------------------------------------------------------------"  
 wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
 wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | sudo apt-key add -
-sudo apt update
-sudo apt-get install $VIRTUALBOXDEP -yyq 
+sudo apt update -yyq 
+sudo apt-get install --install-recommends  $VIRTUALBOXDEP -yyq 
 sudo apt-get autoremove -yyq
-echo "-------------------------------------------------"
-echo "Installer Virtualbox 6.0 fra deb filen til Oracle"
-echo "-------------------------------------------------"
+echo "--------------------------------------------------------------------"
+echo "Installer Virtualbox "$VIRTUALBOXVERSJON" fra deb filen til Oracle"
+echo "-------------------------------------------------------------------"
 cd /tmp/ || exit 
-wget -O virtualbox-6.0.deb "$VIRTUALBOXDEB" -P /tmp/ && sudo dpkg -i /tmp/virtualbox-6.0.deb	
+wget -O virtualbox-"$VIRTUALBOXVERSJON".deb "$VIRTUALBOXDEB" -P "/tmp/" && sudo dpkg -i virtualbox-"$VIRTUALBOXVERSJON".deb
+sleep 2	
+sudo apt --fix-broken install -yyq
+sleep 2
+echo "----------------------------------------------------------------"
+echo "Setter opp virtualbox-dkms for virtualbox-6.0"
+echo "------------------------------------------------------------------" 
+sudo /sbin/vboxconfig
 else
 echo "----------------------------------------------------------------------------------------------------"
 echo -e "\e[1;31m  Du har ikke Virtualisering aktivert sjekk om du kan aktivere Virtualisering i UEFI/BIOS \e[0m" &&  sudo apt-get purge cpu-checker virtualbox-6.0 $VIRTUALBOXDEP -yyq
@@ -497,29 +554,28 @@ fi
 
 
 installext(){   
-echo "----------------------------------------------------------------"
-echo "Later ned VirtualBox 6.0.0 Oracle VM VirtualBox Extension Pack"
-echo "------------------------------------------------------------------"
+echo "------------------------------------------------------------------------------"
+echo "Later ned VirtualBox "$VIRTUALBOXVERSJON" Oracle VM VirtualBox Extension Pack"
+echo "-------------------------------------------------------------------------------"
 cd /tmp/ || exit 
 echo "----------------------------------------------------------------------------------"
-echo "Putter VirtualBox 6.0.0 Oracle VM VirtualBox Extension Pack i /tmp/"
+echo "Putter VirtualBox "$VIRTUALBOXVERSJON" Oracle VM VirtualBox Extension Pack i /tmp/"
 echo "----------------------------------------------------------------------------------"
 wget "$VIRTUALBOXEXT" -P /tmp/ && wget -O SHA256SUMS "$VIRTUALBOXSUMS" -P /tmp/ 
 echo "----------------------------------------------------------------"
 echo "Sjekker om sha256sum til "$VBOXEXTPACK" er riktig"
 echo "------------------------------------------------------------------"
-cd /tmp/ || exit 
-sha256sum -c $VBOXEXTPACK SHA256SUMS  2>&1 | grep --color=always  "OK"
+sha256sum -c $VBOXEXTPACK SHA256SUMS  2>&1 | grep --color=always "OK"
 sleep 10	
 echo "----------------------------------------------------------------------------------"
-echo "Installer VirtualBox 6.0.0 Oracle VM VirtualBox Extension Pack "
+echo "Installer VirtualBox "$VIRTUALBOXVERSJON" Oracle VM VirtualBox Extension Pack "
 echo "----------------------------------------------------------------------------------"
 if  cat $HOME/.profile | grep -qw "export QT_QPA_PLATFORMTHEME=gtk2"
 	then
-sed -i '$ d' $HOME/.profile	&&	vboxmanage extpack install /tmp/$VBOXEXTPACK 
-echo "------------------------------------------------------------------------------------------------------------------------"
-echo "Fjerner QT tema variablen på grunn av problemer med gtk2 tema i virtualbox-6.0 og krever omstart for å bli tatt i bruk"
-echo "-------------------------------------------------------------------------------------------------------------------------"
+sed -i '$ d' $HOME/.profile	&&	/usr/bin/vboxmanage extpack install /tmp/"$VBOXEXTPACK" 
+echo "-----------------------------------------------------------------------------------------------------------------------------------------"
+echo "Fjerner QT tema variablen på grunn av problemer med gtk2 tema i virtualbox-"$VIRTUALBOXVERSJON" og krever omstart for å bli tatt i bruk"
+echo "------------------------------------------------------------------------------------------------------------------------------------------"
 else 
 echo "--------------------------------------------------------------------------------"
 echo "Du har ikke gtk2 tema satt i "$HOME/.profile""
@@ -527,7 +583,7 @@ echo "--------------------------------------------------------------------------
 echo "--------------------------------------------------------------------------------"
 echo "Derfor blir Virtualbox extpack installert med hjelp av gui"
 echo "--------------------------------------------------------------------------------"	
-chmod +x $VBOXEXTPACK && virtualbox /tmp/$VBOXEXTPACK 
+chmod +x /tmp/"$VBOXEXTPACK" && /usr/bin/vboxmanage extpack install /tmp/"$VBOXEXTPACK"
 fi
 }
 
@@ -536,7 +592,7 @@ fi
 
 sjekk-virtualbox() {
 echo "----------------------------------------------------------------"
-if echo "Sjekker om virtualbox er installert" && dpkg --get-selections | grep -qw "virtualbox-6.0"
+if echo "Sjekker om virtualbox er installert" && dpkg --get-selections | grep -qw "virtualbox-"$VIRTUALBOXVERSJON""
 echo "---------------------------------------------------------------"
 then
 groups | grep -ic "vboxusers" > /dev/null
@@ -617,6 +673,33 @@ echo "--------------------------------------------------------------------------
 fi
 }
 
+syncthingppa(){
+if dpkg --get-selections | grep -qw "syncthing"
+then
+echo "-----------------------------------------------------------------------"
+echo "Du har alt installert syncthing"
+echo "-----------------------------------------------------------------------"
+else     
+echo "---------------------------------------------------------------------------------------------"
+echo "Installere syncthing sin stable ppa"    
+echo "---------------------------------------------------------------------------------------------"
+sudo apt-get install $SYNCTHINGDEB -yyq    
+echo "---------------------------------------------------------------------------------------------" 
+echo "Legger til lanserings PGP nøkkler"
+echo "---------------------------------------------------------------------------------------------"    
+curl -s https://syncthing.net/release-key.txt | sudo apt-key add -
+echo "---------------------------------------------------------------------------------------------" 
+echo "Legger til syncthing stable kanal i APT kilden din"
+echo "---------------------------------------------------------------------------------------------" 
+echo "deb https://apt.syncthing.net/ syncthing stable" | sudo tee /etc/apt/sources.list.d/syncthing.list
+sudo apt-get update -yyq 
+sudo apt-get install syncthing -yyq
+echo "---------------------------------------------------------------------------------------------" 
+echo "syncthing stable er installert"
+echo "---------------------------------------------------------------------------------------------" 
+fi 
+}    
+
 avslutter()  {
 echo "---------------------------------------------------------------------------------------------"
 echo "Følgende pakker ble automatisk installert og er ikke lenger påkrevet" 2>/dev/null && sudo apt-get autoremove -yyq 
@@ -627,5 +710,6 @@ exit
 
 installer-ubuntu-ppaer
 gnome3
+syncthingppa
 avslutter
 
