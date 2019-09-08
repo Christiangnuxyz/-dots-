@@ -1,46 +1,53 @@
 #!/bin/sh
 # i3wm installsjons script for Debian/Ubuntu
 
+# TODO finne et alternativ til tomboy som funker med i3wm
+
 # Variabler
-VER="Versjon 1.8.4"
-SISTENDRET="20.feb.2019"
-OS="Testet sist på Ubuntu 18.10"
-NYTT="Lagt til valgfrie moduller for polybar" 
-ENDRINGER="Ingen endringer"
+VER="Versjon 1.8.7"
+SISTENDRET="17.juli.2019"
+OS="Testet sist på Zorin OS 15 "
+NYTT="Lagt til GLava" 
+ENDRINGER="Fikset små bugs" 
+FJERNET="Ingenting fjernet"
 TIPS="bruk --polybar for å installer polybar" 
 
-# repo Pakkker  
+# Ubuntu repo Pakkker  
 TILLEGG="caffeine kdeconnect redshift redshift-gtk"
-MEDIA="flameshot zathura tomboy"
-UTSEENDE="lxappearance gtk-chtheme qt4-qtconfig qt5-style-plugins qt5ct"
-I3BASIC="i3 dmenu pavucontrol git cmake zsh htop python3.6 arandr lxrandr compton compton-conf i3blocks feh i3lock"
+MEDIA="flameshot zathura"
+UTSEENDE="lxappearance gtk-chtheme qt4-qtconfig qt5-style-plugins qt5ct" # Fra venstre er programvarer for å endre på GTK teamer og på høyre side er programvarer for QT teamer
+I3BASIC="i3 dmenu pavucontrol git cmake  htop python3.6 arandr lxrandr compton compton-conf i3blocks feh i3lock"
 I3GAPS="libxcb1-dev libxcb-keysyms1-dev libpango1.0-dev libxcb-util0-dev libxcb-icccm4-dev libyajl-dev libstartup-notification0-dev libxcb-randr0-dev libev-dev libxcb-cursor-dev libxcb-xinerama0-dev libxcb-xkb-dev libxkbcommon-dev libxkbcommon-x11-dev autoconf libxcb-xrm0 libxcb-xrm-dev libxcb-shape0-dev"
-CAVADEP="libfftw3-dev libasound2-dev libncursesw5-dev libpulse-dev libtool"
+CAVADEP="libfftw3-dev libasound2-dev libncursesw5-dev libpulse-dev libtool" 
+GLAVADEP="libpulse0 libpulse-dev libxext6 libxext-dev libxrender-dev libxcomposite-dev meson gcc libgl1-mesa-dev"
 I3LOCKFANCY="scrot imagemagick i3lock i3lock-fancy"
+
+# Pakker som er ment for GNOME 3 som skrivebordsmiljø men som jeg bruker med i3wm
+
 GNOMEPAKKER="gnome-terminal gnome-font-viewer gnome-calendar"
+
+
+# Pakker som kreves til installasjon av forskjelige programvarer og scripts
+OOMOXDEP="libgdk-pixbuf2.0-dev libxml2-utils parallel sassc optipng librsvg2-bin inkscape libsass1 python3-pystache"
 OHMYZSHPAKKER="zsh curl powerline fonts-powerline"
 WPGTKDEP="python-gobject xsltproc"
 
-# For --polybar
+# For pakker som kreves for at funskjonen --polybar skal funke som den skal 
 
 POLYBARPAKKER="cmake cmake-data libcairo2-dev libxcb1-dev libxcb-ewmh-dev libxcb-icccm4-dev libxcb-image0-dev libxcb-randr0-dev libxcb-util0-dev libxcb-xkb-dev pkg-config python-xcbgen xcb-proto libxcb-xrm-dev i3-wm libasound2-dev libmpdclient-dev libiw-dev libcurl4-openssl-dev libpulse-dev libxcb-composite0-dev xcb libxcb-ewmh2"
 POLYBARVALGFRITT="libnl-genl-3-dev libcurl4-openssl-dev libmpdclient-dev libjsoncpp-dev libpulse-dev libasound2-dev	libxcb-cursor-dev libxcb-xrm-dev libxcb-xkb-dev"	
 
-# Maskinvare 
-
-
-# DEB pakker 
-OOMOX="https://github.com/themix-project/oomox/releases/download/1.11/oomox_1.11-3-gde075379_18.10+.deb"
-OOMOXDEP="libgdk-pixbuf2.0-dev libxml2-utils parallel sassc optipng librsvg2-bin inkscape"
-DEADBEEF="https://downloads.sourceforge.net/project/deadbeef/debian/deadbeef-static_0.7.2-2_amd64.deb?r=https%3A%2F%2Fsourceforge.net%2Fprojects%2Fdeadbeef%2Ffiles%2Fdebian%2Fdeadbeef-static_0.7.2-2_amd64.deb%2Fdownload&ts=1540759299"
-
 # Github linker til filer 
 OHMYZSHINSTALL="https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh"
 
-# URL-er 
-# IKKE i bruk som standard men er bare repo pakker 
+# URL-er til forskjelige prosjekter sin lanserings side  
 OOMOXINFO="https://github.com/themix-project/oomox/releases"
 DEADBEEFINFO="https://sourceforge.net/projects/deadbeef/"
+
+# URL-er til DEB pakker 
+OOMOX="https://github.com/themix-project/oomox/releases/download/1.11/oomox_1.11-3-gde075379_18.10+.deb"
+DEADBEEF="https://downloads.sourceforge.net/project/deadbeef/debian/deadbeef-static_0.7.2-2_amd64.deb?r=https%3A%2F%2Fsourceforge.net%2Fprojects%2Fdeadbeef%2Ffiles%2Fdebian%2Fdeadbeef-static_0.7.2-2_amd64.deb%2Fdownload&ts=1540759299"
+
 
 # Info URL-er om forskjellige ting som last ned fra github
 
@@ -57,10 +64,9 @@ BILDEMAPPE="$(xdg-user-dir PICTURES)"
 # Funskjoner $HOME/Dokumenter/ISO-filer
 
 oppstart() {
-cd "$HOME" || exit  >/dev/null
-mkdir -p "git" 2>/dev/null
-cd "$BILDEMAPPE" || exit  >/dev/null
-mkdir -p "Wallpapers" 2>/dev/null
+mkdir -p "$GIT" 
+cd "$BILDEMAPPE" || exit
+mkdir -p "wallpapers" 2>/dev/null
 }  
 
 i3wmoppstart()  {
@@ -70,48 +76,51 @@ echo "$OS"
 echo "Sist endret $SISTENDRET"
 echo "Siste endinger $ENDRINGER"
 echo "Hva som er nytt i $VER $NYTT"
+echo "$FJERNET fra $VER"
 echo "$TIPS"
-echo "_------------------------------------------------"	
+echo "-------------------------------------------------"	
 }  
 
 fonts() {
-	cd "$HOME" || exit 
-echo "Ser etter $FONTS...."  >/dev/null
-if [ ! -f "$FONTS" ];then 
-	echo "file "  "$FONTS" 2>/dev/null  echo "Fant $FONTS mappen...." && cd "$FONTS"  || exit
-else mkdir -p "$HOME/.fonts/" 
-  fi
+echo "-------------------------------------------------"	
+echo "Sjekker om "$FONTS" mappen finnes eller ikke"	
+echo "-------------------------------------------------"
+if 
+test -d ! "$FONTS"
+then
+echo "-------------------------------------------------"	
+echo "Oppretter "$FONTS" mappen"	
+echo "-------------------------------------------------"	
+mkdir -p "$FONTS"	
+else
+echo "-------------------------------------------------"	
+echo ""$FONTS" mappen finnes"	
+echo "-------------------------------------------------"	
+fi
 } 
 
 
 
-#bakgrunner-mappen() {
-#	cd "$BILDEMAPPE" || exit 
-#	echo "Ser ettter $Bakgrunner..." >/dev/null
-#	if [ ! -f "$Bakgrunner" ]
-#		then echo "file " "$Bakgrunner"  "finnes. "; echo "Fant $Bakgrunner mappen...." && cd "$Bakgrunner" || exit  
-#	fi
-#echo "----------------------------------------------------"
-#echo "Hvor bakgrunner dine havner $Bakgrunner"
-#echo "----------------------------------------------------"
-#}  
-
 
 github-mappen() {
-	cd "$HOME" || exit 
-	echo "Ser ettter git mappen..." >/dev/null
-	if [ ! -f "$GIT" ]
-		then  "file" "$GIT" "finnes. "; echo "Fant GIT mappen...." && cd "$GIT" || exit 
-		else
-		cd "$HOME" || exit
-		echo "Lager en mappe for github mappene"
-		mkdir -p "$GIT"
-		exit 	
-	fi
+echo "-------------------------------------------------"	
+echo "Sjekker om "$GIT" mappen finnes eller ikke"	
+echo "-------------------------------------------------"
+if 
+test -d !  "$GIT"
+then
+echo "-------------------------------------------------"	
+echo "Oppretter "$GIT" mappen"	
+echo "-------------------------------------------------"	
+mkdir -p "$GIT"
 echo "----------------------------------------------------"
-echo "Hvor Git filene havner $GIT"
-echo "----------------------------------------------------"
-
+echo "Hvor Git filene havner "$GIT""
+echo "----------------------------------------------------" 	
+else	
+echo "-------------------------------------------------"	
+echo ""$GIT" mappen finnes"	
+echo "-------------------------------------------------"	
+fi
 }  
 
 
@@ -143,7 +152,7 @@ echo "--------------------------------------------------------------------------
 echo "For mer info sjekk ut "$POLYBARURL""
 echo "-----------------------------------------------------------------------------------------------"
 exit
-	}
+}
 
 if  [ "$1" == "--polybar" ];then
 	github-mappen
@@ -157,29 +166,30 @@ fi
 
 pywalsetup () {
 echo "---------------------------" 
-sudo apt-get install python3-pip $WPGTKDEP -yyq
-echo "Installere pywal og wpgtk" && sudo -H pip3 install wpgtk pywal --quiet
-echo "--------------------------" 
-if dpkg -l steam 
+echo "Installere pywal og wpgtk"  
+echo "--------------------------"
+sudo apt-get install python3-pip $WPGTKDEP -yyq && sudo -H pip3 install wpgtk pywal --quiet
+echo "------------------------------------------" 
+echo "Sjekker om steam er installert"
+echo "------------------------------------------" 	 
+if dpkg --get-selections steam 
 then
 echo "------------------------------------------" 
 echo "Installere pywal for steam med metro skin"
 echo "------------------------------------------" 	
 sudo -H pip3 install wal-steam  --quiet
 else 
-echo "--------------------------------------------------------------" 
-echo "Du har ikke steam installert derfor installers ikke wal-steam"
-echo "--------------------------------------------------------------"
+echo "----------------------------------------------------------------------------------" 
+echo "Du har ikke steam installert derfor installers ikke wal-steam fra python3-pip"
+echo "----------------------------------------------------------------------------------"
 fi  
 }
 
 oomox () {
-
 # Installere OOMOX og sjekker om OOMOX er installert
-
 echo "------------------------------------------------------------------------------------------------------------------------------------------------------------------"
 echo "Installere OOMOX for å theme gtk sammen med pywal"
-echo "Sjekk $OOMOXINFO for mer infomasjon om lanseringer av oppdatering til OOMOX"
+echo "Sjekk "$OOMOXINFO" for mer infomasjon om lanseringer av oppdatering til OOMOX"
 echo "---------------------------------------------------------------------------------------------------------------------------------------------------------------------"
 if echo "Sjekker om oomox er installert" 2>/dev/null && dpkg --get-selections | grep -qw oomox >/dev/null
 then
@@ -187,12 +197,13 @@ then
 	echo "Du har alt installert oomox"
 	echo "----------------------------"
 else 
-echo "-----------------------------"
+echo "------------------------------"
 echo "Laster ned og installere oomox"
 echo "------------------------------"	
 sudo apt-get install $OOMOXDEP -yyq
 cd "/tmp/" || exit 
-wget $OOMOX -O oomox.deb -P /tmp/ && sudo dpkg -i oomox.deb
+wget $OOMOX -O oomox.deb -P "/tmp/" 
+sudo dpkg -i oomox.deb
 sudo apt-get install -f  -yyq 
 fi
 }
@@ -201,7 +212,7 @@ fi
 
 avslutter () {
 echo "-------------------------------------------------------------------------------------"
-echo "Følgende pakker ble automatisk installert og er ikke lenger påkrevet" >/dev/null && sudo apt-get autoremove -yyq 
+echo "Følgende pakker ble automatisk installert og er ikke lenger påkrevet" && sudo apt autoremove -yyq
 echo  "FERDIG MED SCRIPET INSTALLSJONS SCRIPET"
 echo "----------------------------------------"
 exit
@@ -294,23 +305,16 @@ sleep 5
 # Sjekker om font-awesome fontene er installert med gnome-font-viewer
 
 fontawsesome()  {
-if ls -la $HOME/.fonts | grep -qw "Font-Awesome"
-then 
-echo "---------------------------------------------"
-echo "Font-Awesome er alt installert $HOME/.fonts"
-echo "---------------------------------------------"
-else
-echo "----------------------------------------------------------------------------------------"
-echo "NB Font-Awesome lagres i $HOME/.fonts så fonten er ikke tilgjengelig for alle brukerne "
-echo "----------------------------------------------------------------------------------------"
-echo "-----------------------"
+if test ! -d "$HOME/.fonts/Font-Awesome"
+then
+mkdir -p "$HOME/.fonts/Font-Awesome" 	
 echo "-----------------------"
 echo "Installere Font-Awesome"
 echo "-----------------------"
-mkdir -p $HOME/.fonts/Font-Awesome && cd $HOME/.fonts/Font-Awesome || exit
+cd "$HOME/.fonts/Font-Awesome" || exit
 cd "$GIT" || exit 
 git clone https://github.com/FortAwesome/Font-Awesome.git
-cd "Font-Awesome/web-fonts-with-css/webfonts"  || exit 
+cd "Font-Awesome/webfonts" || exit 
 cp "$file"*.ttf "$HOME/.fonts/Font-Awesome" 2>/dev/null
 echo "----------------------"
 echo "Font-Awesome er ferdig"
@@ -320,38 +324,78 @@ echo "Åpner med gnome-font-viewer for å sjekke at fontawesome fontene er insta
 gnome-font-viewer fa-brands-400.ttf  & sleep 5 && killall gnome-font-viewer ; 
 gnome-font-viewer fa-regular-400.ttf & sleep 5 && killall gnome-font-viewer ;
 gnome-font-viewer fa-solid-900.ttf & sleep 5 && killall gnome-font-viewer ;
-echo "---------------------------------------------------------------------------------"
+echo "-----------------------------------------------------------------------------------------------------------------------------------------"
+echo "NB Font-Awesome lagres i $HOME/.fonts så fonten er ikke tilgjengelig for alle brukerne "
+echo "-----------------------------------------------------------------------------------------------------------------------------------------"
+else
+test -d "$HOME/.fonts/Font-Awesome"  
+echo "------------------------------------------------------------------------------------------"
+echo "Font-Awesome er alt installert $HOME/.fonts"
+echo "------------------------------------------------------------------------------------------"
+echo "-----------------------------------------------------------------------------------------------------------------------------------------"
+echo "NB Font-Awesome lagres i $HOME/.fonts så fonten er ikke tilgjengelig for alle brukerne "
+echo "-----------------------------------------------------------------------------------------------------------------------------------------"
 fi
 }
 
-cava  () {
-
-# bygger cava og installer pakker som trengs
-
-if ls -la $HOME/git | grep -qw "cava"
-then 
-echo "---------------------------------------------"
-echo "cava er alt installert $HOME/git"
-echo "---------------------------------------------"
-else 	
+cava() {
+# Bygger cava og installer pakker som trengs
+if test ! -d "$HOME/git/cava"
+then
+cd "$GIT" || exit  	
 echo "---------------"
 echo "INSTALLER CAVA"
 echo "---------------"
-cd "$GIT" || exit 
-sudo apt-get install -yyq $CAVADEP
+sudo apt-get install $CAVADEP -yyq
 git clone https://github.com/karlstav/cava.git 
 mv cava /usr/local
-cd cava || exit 
+cd "cava" || exit 
+echo "------------------------------------------------------------------------------------------"
+echo "KJØRER SETUP SCRIPTENE FOR INSTALLASJON AV CAVA"
+echo "------------------------------------------------------------------------------------------"
 ./autogen.sh
 ./configure
 sudo make
 sudo make install
-echo "-----------------------"
-echo "FERDIG MED CAVA"
-echo "----------------------"
+echo "----------------------------------"
+echo "FERDIG MED INSTALLASJON AV CAVA"
+echo "----------------------------------"
+else
+test -d "$HOME/git/cava"	
+echo "---------------------------------------------"
+echo "cava er alt installert $HOME/git"
+echo "---------------------------------------------" 	
 fi
 } 
 
+galvasetup(){
+# Bygger GLava og installer pakker som trengs
+if test ! -d "$HOME/git/glava"
+then
+cd "$GIT" || exit  	
+echo "-----------------------------------------"
+echo "INSTALLER "$GLAVADEP" fra apt for GLava"
+echo "------------------------------------------"
+sudo apt-get install $GLAVADEP -yyq 
+git clone https://github.com/wacossusca34/glava
+cd "glava" || exit 
+CFLAGS="-march=native" meson build
+ninja -C build
+cd build || exit
+echo "----------------------------------"
+echo "INSTALLER GLava med meson"
+echo "----------------------------------"
+sudo meson install
+echo "----------------------------------"
+echo "FERDIG MED INSTALLASJON AV GLava"
+echo "----------------------------------"
+else
+test -d "$HOME/git/glava"	
+echo "---------------------------------------------"
+echo "GLava er alt installert $HOME/git"
+echo "---------------------------------------------" 	
+fi
+} 	
 
 
 ferdig () {
@@ -365,77 +409,14 @@ oppstart
 i3wmoppstart
 i3wm-script
 programmer
-skjermer
-bluetooth
 fonts
 github-mappen
 zsh
 i3-gaps
 fontawsesome
 cava
+galvasetup
 pywalsetup
 oomox
 ferdig
 avslutter
-
-
-# -----------------------------------------------------------------------------
-
-# Ikke i bruk lenger siden 12.1.2019 siden det er en deb pakk nå
-
-# -----------------------------------------------------------------------------
-
-#I3LOCK="scrot imagemagick pkg-config libxcb1 libpam-dev libcairo-dev libxcb-composite0 libxcb-composite0-dev libxcb-xinerama0-dev libev-dev libx11-dev libx11-xcb-dev libxkbcommon0 libxkbcommon-x11-0 libxcb-dpms0-dev libxcb-image0-dev libxcb-util0-dev libxcb-xkb-dev libxkbcommon-x11-dev libxkbcommon-dev"
-
-#skjermer(){
-#echo "--------------------------------------------------------------"
-#echo "Sjekker om det er koblet til to skjermer"
-#echo "--------------------------------------------------------------" 
-#if 
-#xrandr | grep " connected " | awk '{ print$1 }' | wc -l | grep 2 
-#then
-#echo "--------------------------------------------------------------------------"
-#echo "Installere i3lock-fancy for flere skjermer med i3lock-fancy-multimonitor"
-#echo "--------------------------------------------------------------------------"
-#echo "Installere disse pakkene $I3LOCKFANCY" && sudo apt-get install $I3LOCKFANCY -yyq
-#echo "--------------------------------------------------------------------------"
-#cd "$GIT" || exit
-#git clone https://github.com/guimeira/i3lock-fancy-multimonitor.git
-#cp -r i3lock-fancy-multimonitor ~/.i3
-#chmod +x ~/.i3/i3lock-fancy-multimonitor/lock
-#else
-#echo "--------------------------------------------------------------"
-#echo -e "\e[1;31m Du har IKKE to skjermer koblet til nå \e[0m"
-#echo "--------------------------------------------------------------" 
-#fi
-#} 
-
-# -----------------------------------------------------------------------------
-
-# Bruker debpakken fra 22 des 2018
-
-#i3lock() {
-
-# bygger i3lock-fancy & i3lock-color og installer pakker som trengs
-
-
-#echo "-------------------------------------------------------------------------------"
-#echo "Installere i3lock-fancy & i3lock-color"
-#echo "------------------------------------------------------------------------------"
-#cd "$GIT" || exit 
-#sudo apt-get install -yyq $I3LOCK
-#git clone https://github.com/chrjguill/i3lock-color.git
-#git clone https://github.com/meskarune/i3lock-fancy.git
-#cd "$GIT"/i3lock-fancy/ || exit 
-#sudo mv lock /usr/local/bin  2>/dev/null
-#sudo mv icons /usr/local/bin  2>/dev/null
-#} 
-
-# -----------------------------------------------------------------------------
-
-
-# TILENGSPROGRAMMER TIL I3
-#echo "nitrogen er en lett måtte å sett bakgrunner på fra gui-en. Vil du installere nitrogen" && sudo apt-get install nitrogen
-#echo "variety er lett måtte og hente bilde fra nettet og sette bakgrunner. Vil du installere Variety" && sudo apt-get install variety
-
-
