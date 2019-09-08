@@ -3,8 +3,8 @@
 
 ## Om scripetene 
  
-installer-ubuntu-ppaer.sh setter opp forskjellige PPA-er som WINE og NVIDIA og forksjelige GTK temaer
+installer-ubuntu-ppaer.sh setter opp PPA-er for WINE og NVIDIA grafikkort mitt og forskjlige GTK temaer
 
-Reinstallerings-script-for-Ubuntu-1.8.sh Reinstallere programvarer jeg bruker på PC-ene mine med Ubuntu
+Reinstallerings-script-for-Ubuntu.sh Reinstallere programvarer jeg bruker på PC-ene mine med Ubuntu
 
-Setter opp i3wm for Ubuntu med programvarer som jeg bruker med i3wm 
+Setter opp i3wm for Ubuntu med programvarer og konfigrasjoner som jeg bruker med i3wm.
